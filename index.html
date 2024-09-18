@@ -9,11 +9,5 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script type="module">
-      import init, { greet } from "./wasm/pkg/wasm.js";
-      init().then(() => {
-        greet("world");
-      });
-    </script>
   </body>
 </html>
