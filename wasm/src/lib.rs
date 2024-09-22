@@ -60,3 +60,74 @@ impl Entity {
         &mut self.current_hp
     }
 }
+
+#[wasm_bindgen]
+pub struct Class {
+    name: String,
+    health: Option<Health>
+}
+
+#[wasm_bindgen]
+impl Class {
+    pub fn new(name: String) -> Class {
+        Class {
+            name: name.clone(),
+            health: Self::set_health(name)
+        }       
+    }
+
+    fn set_health(name: String) -> Option<Health> {
+        match name.as_str() {
+            "Mage" => Some(Health{
+                current: 40, 
+                maximum: 40, 
+                temporary: 0,
+            }),
+            "Thief" => Some(Health{
+                current: 50, 
+                maximum: 40, 
+                temporary: 0,
+            }),
+            "Warrior" => Some(Health{
+                current: 60, 
+                maximum: 40, 
+                temporary: 0,
+            }),
+            &_ => None
+        }
+    }
+}
+
+pub struct Health {
+    current: u32,
+    maximum: u32,
+    temporary: u32,
+}
+
+impl Health {
+    pub fn new(current: u32, maximum: u32, temporary: u32) -> Health {
+        Health {
+            current,
+            maximum,
+            temporary
+        }
+    }
+
+    pub fn get_current(&self) -> u32 {
+        self.current
+    }
+
+    pub fn get_maximum(&self) -> u32 {
+        self.maximum
+    }
+
+    pub fn get_temporary(&self) -> u32 {
+        self.temporary
+    }
+
+    pub fn set_temporary(&mut self, temporary: u32) {
+        self.temporary = temporary
+    }
+
+    // TODO: Setting current health can be increase and/or decrease
+}
