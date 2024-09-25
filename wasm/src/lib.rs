@@ -1,5 +1,6 @@
 mod utils;
 
+use uuid::{NoContext, Timestamp, Uuid};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -130,4 +131,29 @@ impl Health {
     }
 
     // TODO: Setting current health can be increase and/or decrease
+}
+
+pub struct Item {
+    name: String,
+    uuid: Uuid,
+}
+
+pub trait Unique {
+    fn generate_uuid() -> Uuid;
+}
+
+impl Unique for Item {
+    fn generate_uuid() -> Uuid {
+        let ts = Timestamp::now(NoContext);
+        return Uuid::new_v7(ts)
+    }
+}
+
+impl Item {
+    pub fn new(name: String) -> Item {
+        Item {
+            name,
+            uuid: Item::generate_uuid()
+        }
+    }
 }
