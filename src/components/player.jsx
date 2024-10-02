@@ -1,4 +1,4 @@
-import * as wasm from '../../wasm/pkg'
+import * as wasm from '~/wasm/pkg'
 
 export default function Player() {
   const player = wasm.Entity.new(30, 30, 5, 'Ares')

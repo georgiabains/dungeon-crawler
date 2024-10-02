@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import * as wasm from '../../wasm/pkg'
+import * as wasm from '~/wasm/pkg'
 
 export default function Class() {
   const [selectedClass, setSelectedClass] = useState('')
