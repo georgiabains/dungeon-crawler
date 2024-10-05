@@ -1,6 +1,4 @@
 mod utils;
-
-use uuid::{NoContext, Timestamp, Uuid};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -8,152 +6,80 @@ pub fn greet(name: &str) -> String {
     format!("Hello from Rust, {}!", name)
 }
 
-#[wasm_bindgen]
-pub struct Entity {
-    current_hp: u32,
-    total_hp: u32,
-    attack: u32,
-    name: String,
-    // Adding an alive/dead state here might make things simpler
+type EntityIndex = usize;
+
+/**
+ * Components.
+ * - Add in alphabetical order.
+ */
+struct Attack(u64);
+struct Attributes {
+    dexterity: usize,
+    strength: usize,
 }
-
-#[wasm_bindgen]
-impl Entity {
-    pub fn new(current_hp_val: u32, total_hp_val: u32, attack_val: u32, name_val: String) -> Entity {
-        Entity {
-            current_hp: current_hp_val,
-            total_hp: total_hp_val,
-            attack: attack_val,
-            name: name_val,
-        }
-    }
-
-    pub fn get_current_hp(&self) -> u32 {
-        self.current_hp
-    }
-
-    pub fn get_total_hp(&self) -> u32 {
-        self.total_hp
-    }
-
-    pub fn get_attack(&self) -> u32 {
-        self.attack
-    }
-
-    pub fn get_name(&self) -> String {
-        self.name.clone()
-    }
-
-    pub fn set_current_hp(&mut self, new_hp: u32) {
-        Self::reduce_current_hp(Self::borrow_current_hp(self), new_hp)
-    }
-
-    fn reduce_current_hp(current_hp: &mut u32, reduce_value: u32) {
-        if reduce_value > *current_hp {
-            *current_hp = 0;
-            return
-        }
-
-        *current_hp = *current_hp - reduce_value
-    }
-
-    fn borrow_current_hp(&mut self) -> &mut u32 {
-        &mut self.current_hp
-    }
+struct Class(&'static str);
+struct CombatCoordinate {
+    x: u16,
+    y: u16,
 }
-
-#[wasm_bindgen]
-pub struct Class {
-    name: String,
-    health: Option<Health>
+struct Defence(u64);
+struct GearSlot(&'static str); // TODO: Figure out how to store slot. Needs to allow different positions on the body.
+struct Health {
+    current: f32,
+    maximum: f32,
+    temporary: f32,
 }
+struct Inventory(Vec<EntityIndex>); // TODO: Needs to be list of Item Entities only (or references to Item Entities)
+struct IsConsumable(bool);
+struct IsEnemy(bool);
+struct IsEquippable(bool);
+struct IsEquipped(bool);
+struct IsPlaceable(bool);
+struct IsPlayer(bool);
+struct Mana(u64);
+struct Name(&'static str);
+struct Personality(&'static str); // TODO: Maybe splitting into separate bools makes more sense, but I'll do this for now.
+struct Skill(&'static str); // TODO: This doesn't feel right. Should there by an Entity called Input? IDK.
+struct Thumbnail(bool); // TODO: Figure out image storage.
 
-#[wasm_bindgen]
-impl Class {
-    pub fn new(name: String) -> Class {
-        Class {
-            name: name.clone(),
-            health: Self::set_health(name)
-        }       
-    }
+/**
+ * Systems.
+ * - Add in alphabetical order.
+ */
 
-    fn set_health(name: String) -> Option<Health> {
-        match name.as_str() {
-            "Mage" => Some(Health{
-                current: 40, 
-                maximum: 40, 
-                temporary: 0,
-            }),
-            "Thief" => Some(Health{
-                current: 50, 
-                maximum: 40, 
-                temporary: 0,
-            }),
-            "Warrior" => Some(Health{
-                current: 60, 
-                maximum: 40, 
-                temporary: 0,
-            }),
-            &_ => None
-        }
-    }
-}
+/**
+ * Game State.
+ * - Game logic.
+ */
 
-pub struct Health {
-    current: u32,
-    maximum: u32,
-    temporary: u32,
-}
+struct GameState {
 
-impl Health {
-    pub fn new(current: u32, maximum: u32, temporary: u32) -> Health {
-        Health {
-            current,
-            maximum,
-            temporary
-        }
-    }
+    /**
+     * Entities.
+     */
+    characters: Vec<EntityIndex>,
+    items: Vec<EntityIndex>,
 
-    pub fn get_current(&self) -> u32 {
-        self.current
-    }
-
-    pub fn get_maximum(&self) -> u32 {
-        self.maximum
-    }
-
-    pub fn get_temporary(&self) -> u32 {
-        self.temporary
-    }
-
-    pub fn set_temporary(&mut self, temporary: u32) {
-        self.temporary = temporary
-    }
-
-    // TODO: Setting current health can be increase and/or decrease
-}
-
-pub struct Item {
-    name: String,
-    uuid: Uuid,
-}
-
-pub trait Unique {
-    fn generate_uuid() -> Uuid;
-}
-
-impl Unique for Item {
-    fn generate_uuid() -> Uuid {
-        let ts = Timestamp::now(NoContext);
-        return Uuid::new_v7(ts)
-    }
-}
-
-impl Item {
-    pub fn new(name: String) -> Item {
-        Item {
-            name,
-            uuid: Item::generate_uuid()
-        }
-    }
+    /**
+     * Components.
+     */
+    attack_components: Vec<Option<Attack>>,
+    attributes_components: Vec<Option<Attributes>>,
+    class_components: Vec<Option<Class>>,
+    combat_coordinate_components: Vec<Option<CombatCoordinate>>,
+    defence_components: Vec<Option<Defence>>,
+    gear_slot_components: Vec<Option<GearSlot>>,
+    health_components: Vec<Option<Health>>,
+    inventory_components: Vec<Option<Inventory>>,
+    is_consumable_components: Vec<Option<IsConsumable>>,
+    is_enemy_components: Vec<Option<IsEnemy>>,
+    is_equippable_components: Vec<Option<IsEquippable>>,
+    is_equipped_components: Vec<Option<IsEquipped>>,
+    is_placeable_components: Vec<Option<IsPlaceable>>,
+    is_player_components: Vec<Option<IsPlayer>>,
+    mana_components: Vec<Option<Mana>>,
+    name_components: Vec<Option<Name>>,
+    personality_components: Vec<Option<Personality>>,
+    skill_components: Vec<Option<Skill>>,
+    thumbnail_components: Vec<Option<Thumbnail>>,
 }
