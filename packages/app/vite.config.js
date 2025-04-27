@@ -7,13 +7,6 @@ export default defineConfig({
     plugins: [react(), wasm()],
     build: {
         outDir: 'dist',
-        rollupOptions: {
-            input: 'src/index.ts',
-            output: {
-                entryFileNames: '[name].js',
-                format: 'esm',
-            }
-        },
         target: 'esnext',
         minify: false
     }
