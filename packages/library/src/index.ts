@@ -1,12 +1,5 @@
-import { wasm_test, GameState } from '../wasm/index'
-
-const test = () => {
-  console.log(GameState)
-  GameState.new()
-}
+import { sum_test } from '../wasm/index'
 
 export {
-  GameState,
-  wasm_test,
-  test
+  sum_test,
 }

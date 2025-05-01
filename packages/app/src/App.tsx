@@ -1,20 +1,13 @@
-import { GameState } from '@workspace/library'
+import { sum_test } from '../../library'
 
 function App() {
-  const game = new GameState
 
-  console.log(GameState)
+  console.log(sum_test(2, 2))
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-
-    game.add_entity
-
-    // GameState.add_entity()
-    GameState.prototype.add_name_to_entity(formData.get("entity"))
-    // GameState.get_all_entities()
   }
 
   return (
