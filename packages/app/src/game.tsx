@@ -1,6 +1,6 @@
-import { sum_test } from '../../library'
+import { sum_test } from '../../library/dist'
 
-function App() {
+function Game() {
 
   console.log(sum_test(2, 2))
 
@@ -21,4 +21,4 @@ function App() {
   )
 }
 
-export default App
+export default Game
