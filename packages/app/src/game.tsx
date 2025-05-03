@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { sum_test } from '@workspace/library'
 
 type Entity = {
@@ -31,10 +31,19 @@ const weapons = { dagger, sword, staff }
 
 console.log(weapons)
 
+function load(key: string) {
+  const item = window.sessionStorage.getItem(key);
+  return item != null ? JSON.parse(item) : [];
+}
+
 function Game() {
   // Test that confirms running WASM for calculations is possible
   // console.log(sum_test(2, 2))
-  const [player, setPlayer] = useState({} as Entity)
+  const [player, setPlayer] = useState(() => load('player'))
+
+  useEffect(() => {
+    window.sessionStorage.setItem('player', JSON.stringify(player))
+  }, [player])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -56,11 +65,15 @@ function Game() {
     <>
       { player.isLive 
         ? <>
-            <p>Player details:</p>
-            <ul>
-              <li>Name: {player.name}</li>
-              <li>Weapon: {player.weapon.name}</li>
-            </ul>
+            <aside>
+              <p>Player details:</p>
+              <ul>
+                <li>Name: {player.name}</li>
+                <li>Weapon: {player.weapon.name}</li>
+              </ul>
+            </aside>
+
+            <button type="button">Enter dungeon</button>
           </>
         : <form method="post" onSubmit={handleSubmit}>
             <div>
