@@ -1,22 +1,6 @@
-import { JSX, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { sum_test } from '@workspace/library'
-
-type Encounter = {
-  render: JSX.Element | undefined,
-  name: string,
-  type: string
-}
-
-type Entity = {
-  isLive: boolean,
-  name: string,
-  weapon: Weapon
-}
-
-type Weapon = {
-  attack: number,
-  name: string,
-}
+import { Encounter, Entity, Weapon } from './types'
 
 const dagger: Weapon = {
   attack: 5,
