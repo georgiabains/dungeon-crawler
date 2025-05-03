@@ -1,0 +1,27 @@
+:root {
+  --color-neutral-0: #f7f7f7;
+  --color-neutral-1: #1b1b1b;
+
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-neutral-1);
+  color: var(--color-neutral-0);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-neutral-0: #1b1b1b;
+    --color-neutral-1: #f7f7f7;
+  }
+}
