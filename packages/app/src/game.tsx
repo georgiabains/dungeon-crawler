@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { JSX, useEffect, useState } from 'react'
 import { sum_test } from '@workspace/library'
 
 type Encounter = {
+  render: JSX.Element | undefined,
   name: string,
   type: string
 }
@@ -72,6 +73,7 @@ function Game() {
     const formData = new FormData(event.currentTarget)
 
     setEncounter({
+      render: setEncounterRender(formData.get('encounter' as string) as string),
       name: setEncounterName(formData.get('encounter' as string) as string),
       type: formData.get('encounter' as string) as string
     })
@@ -92,6 +94,52 @@ function Game() {
     }
 
     return name
+  })
+
+  const setEncounterRender = ((encounterType: string) => {
+    let render
+
+    switch (encounterType) {
+      case 'combat':
+        render = renderCombat()
+        break
+      case 'loot':
+        render = renderLoot()
+        break
+      case 'rest':
+        render = renderRest()
+    }
+
+    return render
+  })
+
+  const renderCombat = (() => {
+    return (
+      <>
+        <p>combat test</p>
+      </>
+    )
+  })
+
+  const renderLoot = (() => {
+    return (
+      <>
+        <h4>Chest contents</h4>
+        <ul>
+          <li>Worn Greaves</li>
+          <li>Dented Shield</li>
+          <li>Health potion</li>
+        </ul>
+      </>
+    )
+  })
+
+  const renderRest = (() => {
+    return (
+      <>
+        <p>You take a well needed moment to slake your thirst and nibble on bread and cheese from your pack.</p>
+      </>
+    )
   })
 
   return (
@@ -144,7 +192,11 @@ function Game() {
 
               {
                 encounter.name 
-                ? <p>{encounter.name}</p>
+                ? <div>
+                    <h3>{encounter.name}</h3>
+
+                    {encounter.render}
+                  </div>
                 : <form method="post" onSubmit={handleChooseEncounter}>
                     <fieldset>
                       <legend>Choose Encounter</legend>
