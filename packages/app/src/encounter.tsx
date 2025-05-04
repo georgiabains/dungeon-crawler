@@ -1,20 +1,17 @@
 import { Encounter, EncounterParam } from './types'
 import encounterData from './encounter-data.json'
+import EncounterBaseline from './encounter-baseline'
+import EncounterCombat from './encounter-combat'
 
 function EncounterRender({ type }: EncounterParam) {
-  const encounter = getEncounterData(type) as Encounter
+  const encounter = encounterData[type as keyof typeof encounterData] as Encounter
 
-  function getEncounterData(type: string) {
-    return encounterData[type as keyof typeof encounterData]
+  switch (type) {
+    case 'combat':
+      return <EncounterCombat {...encounter} />
+    default:
+      return <EncounterBaseline {...encounter} />
   }
-
-  return (
-    <>
-      <p>{encounter?.name}</p>
-      <p>{encounter?.type}</p>
-      <p>{encounter?.description}</p>
-    </>
-  )
 }
 
 export default EncounterRender
