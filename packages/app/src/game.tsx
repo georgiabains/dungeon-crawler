@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { sum_test } from '@workspace/library'
 import { Entity, Weapon } from './types'
 import EncounterRender from './encounter'
+import FrameParty from './frame-party'
 
 const dagger: Weapon = {
   attack: 5,
@@ -64,13 +65,7 @@ function Game() {
     <>
       { player.isLive 
         ? <div>
-            <aside>
-              <p>Player details:</p>
-              <ul>
-                <li>Name: {player.name}</li>
-                <li>Weapon: {player.weapon.name}</li>
-              </ul>
-            </aside>
+            <FrameParty {...player} />
 
             { showDungeon ? '' : <button onClick={handleEnterDungeon} type="button">Enter dungeon</button>}
           </div>
