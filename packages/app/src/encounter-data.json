@@ -1,0 +1,17 @@
+{
+  "combat": {
+    "name": "Combat",
+    "type": "combat",
+    "description": "Fight against enemies"
+  },
+  "loot": {
+    "name": "Chest of unknown riches",
+    "type": "Loot",
+    "description": "Discover hidden treasures and discarded trinkets"
+  },
+  "rest": {
+    "name": "Recuperate at camp",
+    "type": "rest",
+    "description": "You take a well needed moment to slake your thirst and nibble on bread and cheese from your pack."
+  }
+}

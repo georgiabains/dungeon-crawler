@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { sum_test } from '@workspace/library'
 import { Encounter, Entity, Weapon } from './types'
+import EncounterRender from './encounter'
 
 const dagger: Weapon = {
   attack: 5,
@@ -252,9 +253,7 @@ function Game() {
               {
                 encounter.name 
                 ? <div>
-                    <h3>{encounter.name}</h3>
-
-                    {encounter.render}
+                    <EncounterRender type={encounter.type} />
                   </div>
                 : <form method="post" onSubmit={handleChooseEncounter}>
                     <fieldset>

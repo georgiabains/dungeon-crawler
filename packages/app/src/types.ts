@@ -1,24 +1,23 @@
 import { JSX } from 'react'
 
-type Encounter = {
+export type Encounter = {
   render: JSX.Element | undefined,
   name: string,
+  type: string,
+  description: string,
+}
+
+export type EncounterParam = {
   type: string
 }
 
-type Entity = {
+export type Entity = {
   isLive: boolean,
   name: string,
   weapon: Weapon
 }
 
-type Weapon = {
+export type Weapon = {
   attack: number,
   name: string,
-}
-
-export type {
-  Encounter,
-  Entity,
-  Weapon
 }
