@@ -17,6 +17,10 @@ export type Entity = {
   weapon: Weapon
 }
 
+export type PropsPlayer = {
+  player: Entity
+}
+
 export type PropsScreenInitialisation = {
   setPlayer: Function
 }
