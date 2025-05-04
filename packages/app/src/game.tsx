@@ -30,7 +30,7 @@ function Game() {
   // console.log(sum_test(2, 2))
   const [player, setPlayer] = useState(() => load('player'))
   const [showDungeon, setShowDungeon] = useState(false)
-  const [encounter, setEncounter] = useState({} as Encounter)
+  const [encounterType, setEncounterType] = useState('' as string)
 
   useEffect(() => {
     window.sessionStorage.setItem('player', JSON.stringify(player))
@@ -57,45 +57,7 @@ function Game() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget)
 
-    setEncounter({
-      render: setEncounterRender(formData.get('encounter' as string) as string),
-      name: setEncounterName(formData.get('encounter' as string) as string),
-      type: formData.get('encounter' as string) as string
-    })
-  })
-
-  const setEncounterName = ((encounterType: string) => {
-    let name: string = ''
-
-    switch (encounterType) {
-      case 'loot':
-        name = 'Chest of Unknown Riches'
-        break
-      case 'combat':
-        name = 'Combat vs Goblins'
-        break
-      case 'rest':
-        name = 'Recuperate at Camp'
-    }
-
-    return name
-  })
-
-  const setEncounterRender = ((encounterType: string) => {
-    let render
-
-    switch (encounterType) {
-      case 'combat':
-        render = renderCombat()
-        break
-      case 'loot':
-        render = renderLoot()
-        break
-      case 'rest':
-        render = renderRest()
-    }
-
-    return render
+    setEncounterType(formData.get('encounter' as string) as string)
   })
 
   const renderCombat = (() => {
@@ -181,27 +143,6 @@ function Game() {
     )
   })
 
-  const renderLoot = (() => {
-    return (
-      <>
-        <h4>Chest contents</h4>
-        <ul>
-          <li>Worn Greaves</li>
-          <li>Dented Shield</li>
-          <li>Health potion</li>
-        </ul>
-      </>
-    )
-  })
-
-  const renderRest = (() => {
-    return (
-      <>
-        <p>You take a well needed moment to slake your thirst and nibble on bread and cheese from your pack.</p>
-      </>
-    )
-  })
-
   return (
     <>
       { player.isLive 
@@ -251,9 +192,9 @@ function Game() {
               <h2>Dungeon</h2>
 
               {
-                encounter.name 
+                encounterType
                 ? <div>
-                    <EncounterRender type={encounter.type} />
+                    <EncounterRender type={encounterType} />
                   </div>
                 : <form method="post" onSubmit={handleChooseEncounter}>
                     <fieldset>
