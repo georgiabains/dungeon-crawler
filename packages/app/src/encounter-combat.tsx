@@ -1,19 +1,12 @@
-import { useState } from "react"
-import { Encounter, Entity, Weapon } from "./types"
+import { useEffect, useState } from "react"
+import { Action, Encounter, Entity, Weapon } from "./types"
 import ConditionalElement from "./conditional-element"
 import EntityRender from "./entity-render"
 
 function EncounterCombat(encounter: Encounter) {
   const [isPlayerChoiceAttack, setIsPlayerChoiceAttack] = useState(false)
   const [target, setTarget] = useState({} as Entity)
-
-  function handleChoiceAttack() {
-    setIsPlayerChoiceAttack(true)
-  }
-
-  function handleAttackTarget() {
-    setIsPlayerChoiceAttack(false)
-  }
+  const [action, setAction] = useState({} as Action)
 
   const bow: Weapon = {
     attack: 5,
@@ -39,6 +32,7 @@ function EncounterCombat(encounter: Encounter) {
 
   const GoblinArcher: Entity = {
     health: 100,
+    id: 1412412,
     name: 'Goblin Archer',
     isLive: true,
     isSelectable: isPlayerChoiceAttack,
@@ -47,6 +41,7 @@ function EncounterCombat(encounter: Encounter) {
 
   const GoblinMage: Entity = {
     health: 100,
+    id: 7583171,
     name: 'Goblin Mage',
     isLive: true,
     isSelectable: isPlayerChoiceAttack,
@@ -55,6 +50,7 @@ function EncounterCombat(encounter: Encounter) {
 
   const GoblinSwordsman: Entity = {
     health: 100,
+    id: 9137541097,
     name: 'Goblin Swordsman',
     isLive: true,
     isSelectable: isPlayerChoiceAttack,
@@ -63,10 +59,54 @@ function EncounterCombat(encounter: Encounter) {
 
   const GoblinHealer: Entity = {
     health: 100,
+    id: 91741071,
     name: 'Goblin Healer',
     isLive: true,
     isSelectable: isPlayerChoiceAttack,
     weapon: weapons.wand
+  }
+
+  const [enemies, setEnemies] = useState([GoblinArcher, GoblinHealer, GoblinMage, GoblinSwordsman])
+
+  useEffect(() => {
+    const clonedEnemies = [...enemies]
+    clonedEnemies.forEach((enemy) => {
+      enemy.isSelectable = isPlayerChoiceAttack
+    })
+    setEnemies(clonedEnemies)
+  }, [isPlayerChoiceAttack])
+
+  useEffect(() => {
+    if (!action) return
+    const targetIndex = enemies.findIndex((enemy) => enemy.id === target.id)
+    const clonedEnemy = {...enemies[targetIndex]}
+  
+    switch (action.type) {
+      case 'attack':
+        if (!clonedEnemy.health) {
+          console.error("Enemy does not have health")
+          return
+        }
+
+        if (!action.healthValue) {
+          console.error("Action did not provide a health value")
+          return
+        }
+
+        clonedEnemy.health = clonedEnemy.health += action.healthValue
+        break
+    }
+  
+    const clonedState = [...enemies];
+    clonedState[targetIndex] = clonedEnemy
+  
+    setEnemies(clonedState);
+    setIsPlayerChoiceAttack(false)
+  }, [target as Entity])
+
+  function handleChoiceAttack() {
+    setIsPlayerChoiceAttack(true)
+    setAction({'type': "attack", "healthValue": -5 })
   }
 
   return (
@@ -74,18 +114,9 @@ function EncounterCombat(encounter: Encounter) {
       <p>{encounter.name}</p>
       <div className="encounter-combat__grid">
         <ul className="encounter-combat__enemies">
-          <li>
-            <EntityRender entity={GoblinArcher} setTarget={setTarget} />
-          </li>
-          <li>
-            <EntityRender entity={GoblinSwordsman} setTarget={setTarget} />
-          </li>
-          <li>
-            <EntityRender entity={GoblinMage} setTarget={setTarget} />
-          </li>
-          <li>
-            <EntityRender entity={GoblinHealer} setTarget={setTarget} />
-          </li>
+          {enemies.map((enemy) =>
+            <li key={enemy.id}><EntityRender entity={enemy} setTarget={setTarget} /></li>
+          )}
         </ul>
 
         <p>Party group will be a loop based on a "party" variable.</p>

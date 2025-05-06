@@ -1,5 +1,10 @@
 import { JSX, ReactElement } from 'react'
 
+export type Action = {
+  healthValue?: number,
+  type: string
+}
+
 export type Encounter = {
   render: JSX.Element | undefined,
   name: string,
@@ -13,6 +18,7 @@ export type EncounterParam = {
 
 export type Entity = {
   health?: number,
+  id: number,
   isLive?: boolean,
   isSelectable?: boolean,
   name: string,
