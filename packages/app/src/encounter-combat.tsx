@@ -1,94 +1,108 @@
-import { Encounter } from "./types"
+import { useState } from "react"
+import { Encounter, Entity, Weapon } from "./types"
+import ConditionalElement from "./conditional-element"
+import EntityRender from "./entity-render"
 
 function EncounterCombat(encounter: Encounter) {
+  const [isPlayerChoiceAttack, setIsPlayerChoiceAttack] = useState(false)
+  const [target, setTarget] = useState({} as Entity)
 
-  // TODO: Go through & sort out states
-  const renderCombat = (() => {
-    let isPass: boolean = false
-    let isAttack: boolean = false
-    const handleCombatChoice = ((event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-      const formData = new FormData(event.currentTarget)
-      switch (formData.get('choice' as string)) {
-        case 'pass':
-          isPass = true
-          isAttack = false
-          break
-        case 'attack':
-          isAttack = true
-          isPass = false
-      }
-    })
+  function handleChoiceAttack() {
+    setIsPlayerChoiceAttack(true)
+  }
 
-    const handleAttackChoice = ((event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-      const formData = new FormData(event.currentTarget)
-    })
+  function handleAttackTarget() {
+    setIsPlayerChoiceAttack(false)
+  }
 
-    const renderPass = (() => {
-      return (<p>You pass your turn</p>)
-    })
+  const bow: Weapon = {
+    attack: 5,
+    name: 'Bow'
+  }
 
-    const renderAttack = (() => {
-      return (
-        <form method="post" onSubmit={handleAttackChoice}>
-          <fieldset>
-            <legend>Choose target</legend>
+  const wand: Weapon = {
+    attack: 5,
+    name: 'Wand'
+  }
+  
+  const sword: Weapon = {
+    attack: 5,
+    name: 'Sword'
+  }
+  
+  const staff: Weapon = {
+    attack: 5,
+    name: 'Staff'
+  }
+  
+  const weapons = { bow, sword, staff, wand }
 
-            <div>
-              <input id="TargetArcher" name="target" type="radio" value="archer" />
-              <label htmlFor="TargetArcher">Goblin Archer</label>
-            </div>
+  const GoblinArcher: Entity = {
+    health: 100,
+    name: 'Goblin Archer',
+    isLive: true,
+    isSelectable: isPlayerChoiceAttack,
+    weapon: weapons.bow
+  }
 
-            <div>
-              <input id="TargetSwordsman" name="target" type="radio" value="swordsman" />
-              <label htmlFor="TargetSwordsman">Goblin Swordsman</label>
-            </div>
+  const GoblinMage: Entity = {
+    health: 100,
+    name: 'Goblin Mage',
+    isLive: true,
+    isSelectable: isPlayerChoiceAttack,
+    weapon: weapons.staff
+  }
 
-            <div>
-              <input id="TargetMage" name="target" type="radio" value="mage" />
-              <label htmlFor="TargetMage">Goblin Mage</label>
-            </div>
-          </fieldset>
+  const GoblinSwordsman: Entity = {
+    health: 100,
+    name: 'Goblin Swordsman',
+    isLive: true,
+    isSelectable: isPlayerChoiceAttack,
+    weapon: weapons.sword
+  }
 
-          <button type="submit">Attack</button>
-        </form>
-      )
-    })
-
-    return (
-      <>
-        <h3>Enemy list</h3>
-        <ul>
-          <li>Goblin Archer</li>
-          <li>Goblin Swordsman</li>
-          <li>Goblin Mage</li>
-        </ul>
-
-        <h3>Choose action</h3>
-        <form method="post" onSubmit={handleCombatChoice}>
-          <div>
-            <input id="ChoiceAttack" name="choice" type="radio" value="attack" />
-            <label htmlFor="ChoiceAttack">Attack</label> 
-          </div>
-
-          <div>
-            <input id="ChoicePass" name="choice" type="radio" value="pass" />
-            <label htmlFor="ChoicePass">Pass</label>
-          </div>
-
-          <button type="submit">Select</button>
-        </form>
-
-        {isAttack ? renderAttack() : ''}
-        {isPass ? renderPass() : ''}
-      </>
-    )
-  })
+  const GoblinHealer: Entity = {
+    health: 100,
+    name: 'Goblin Healer',
+    isLive: true,
+    isSelectable: isPlayerChoiceAttack,
+    weapon: weapons.wand
+  }
 
   return (
     <>
       <p>{encounter.name}</p>
+      <div className="encounter-combat__grid">
+        <ul className="encounter-combat__enemies">
+          <li>
+            <EntityRender entity={GoblinArcher} setTarget={setTarget} />
+          </li>
+          <li>
+            <EntityRender entity={GoblinSwordsman} setTarget={setTarget} />
+          </li>
+          <li>
+            <EntityRender entity={GoblinMage} setTarget={setTarget} />
+          </li>
+          <li>
+            <EntityRender entity={GoblinHealer} setTarget={setTarget} />
+          </li>
+        </ul>
+
+        <p>Party group will be a loop based on a "party" variable.</p>
+        <ul>
+          <li>Party 1</li>
+          <li>Party 2</li>
+          <li>Party 3</li>
+          <li>Party 4</li>
+        </ul>
+      </div>
+
+      <div>
+        <p>Choices</p>
+        <button type="button" onClick={handleChoiceAttack}>Basic Attack (5 damage)</button>
+        <ConditionalElement isShow={isPlayerChoiceAttack} element={<p>Choose target</p>} />
+        {target.name ? <p>Target: {target.name}</p> : null}
+      </div>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { JSX, ReactElement } from 'react'
 
 export type Encounter = {
   render: JSX.Element | undefined,
@@ -12,9 +12,16 @@ export type EncounterParam = {
 }
 
 export type Entity = {
-  isLive: boolean,
+  health?: number,
+  isLive?: boolean,
+  isSelectable?: boolean,
   name: string,
-  weapon: Weapon
+  weapon?: Weapon
+}
+
+export type PropsConditionalText = {
+  isShow: boolean,
+  element: ReactElement
 }
 
 export type PropsPlayer = {
