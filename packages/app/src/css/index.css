@@ -31,3 +31,9 @@ body {
   display: grid;
   grid-template-columns: 2fr 1fr;
 }
+
+.encounter-combat__entities {
+  border: 1px solid white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

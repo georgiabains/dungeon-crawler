@@ -163,14 +163,13 @@ function EncounterCombat(encounter: Encounter) {
       <p>{encounter.name}</p>
       <div className="encounter-combat__grid">
         <div className="encounter-combat__board">
-          <ul className="encounter-combat__enemies">
+          <ul className="encounter-combat__entities">
             {enemies.map((enemy) =>
               <li key={enemy.id}><EntityRender entity={enemy} setTarget={setTarget} /></li>
             )}
           </ul>
-
-          <p>Party group will be a loop based on a "party" variable.</p>
-          <ul>
+          
+          <ul className="encounter-combat__entities">
             {partyMembers.map((party) =>
               <li key={party.id}><EntityRender entity={party} setTarget={setTarget}/></li>
             )}
