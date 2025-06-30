@@ -31,13 +31,13 @@ function FrameDungeon() {
 
           {/* Idea will be that encounters are part of a "generation" or randomisation function, and 3 will be chosen based on probability (i.e. higher chance to get combat or rest over loot or a special event) */}
           <div>
-            <input id="EncounterLoot" name="encounter" value="loot" type="radio" />
-            <label htmlFor="EncounterLoot">Loot chest</label>
+            <input id="EncounterCombat" name="encounter" value="combat" type="radio" />
+            <label htmlFor="EncounterCombat">Combat</label>
           </div>
 
           <div>
-            <input id="EncounterCombat" name="encounter" value="combat" type="radio" />
-            <label htmlFor="EncounterCombat">Combat</label>
+            <input id="EncounterLoot" name="encounter" value="loot" type="radio" />
+            <label htmlFor="EncounterLoot">Loot chest</label>
           </div>
 
           <div>
