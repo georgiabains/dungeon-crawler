@@ -108,7 +108,7 @@ function EncounterCombat(encounter: Encounter) {
   }
 
   const [enemies, setEnemies] = useState([GoblinArcher, GoblinHealer, GoblinMage, GoblinSwordsman])
-  const [partyMembers, setPartyMembers] = useState([PartySwordsman, PartyBarbarian, PartyWizard, PartyHealer])
+  const partyMembers = [PartySwordsman, PartyBarbarian, PartyWizard, PartyHealer]
 
   useEffect(() => {
     const clonedEnemies = [...enemies]
