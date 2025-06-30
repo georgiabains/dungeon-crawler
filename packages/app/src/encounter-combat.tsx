@@ -7,6 +7,8 @@ function EncounterCombat(encounter: Encounter) {
   const [isPlayerChoiceAttack, setIsPlayerChoiceAttack] = useState(false)
   const [target, setTarget] = useState({} as Entity)
   const [action, setAction] = useState({} as Action)
+  const [activeEntity, setActiveEntity] = useState({} as Entity)
+  const [isPlayerTurn, setIsPlayerTurn] = useState(true)
 
   const bow: Weapon = {
     attack: 5,
@@ -66,7 +68,48 @@ function EncounterCombat(encounter: Encounter) {
     weapon: weapons.wand
   }
 
+  const PartySwordsman: Entity = {
+    health: 100,
+    id: 193471049,
+    name: 'Party Swordsman',
+    isLive: true,
+    isParty: true,
+    isSelectable: !isPlayerChoiceAttack,
+    weapon: weapons.sword
+  }
+
+  const PartyBarbarian: Entity = {
+    health: 100,
+    id: 4029752,
+    name: 'Party Barbarian',
+    isLive: true,
+    isParty: true,
+    isSelectable: !isPlayerChoiceAttack,
+    weapon: weapons.sword
+  }
+
+  const PartyWizard: Entity = {
+    health: 100,
+    id: 310741,
+    name: 'Party Wizard',
+    isLive: true,
+    isParty: true,
+    isSelectable: !isPlayerChoiceAttack,
+    weapon: weapons.staff
+  }
+
+  const PartyHealer: Entity = {
+    health: 100,
+    id: 9753781871,
+    name: 'Party Healer',
+    isLive: true,
+    isParty: true,
+    isSelectable: !isPlayerChoiceAttack,
+    weapon: weapons.wand
+  }
+
   const [enemies, setEnemies] = useState([GoblinArcher, GoblinHealer, GoblinMage, GoblinSwordsman])
+  const [partyMembers, setPartyMembers] = useState([PartySwordsman, PartyBarbarian, PartyWizard, PartyHealer])
 
   useEffect(() => {
     const clonedEnemies = [...enemies]
@@ -77,6 +120,11 @@ function EncounterCombat(encounter: Encounter) {
   }, [isPlayerChoiceAttack])
 
   useEffect(() => {
+    if (target.isParty) {
+      setIsPlayerChoiceAttack(true)
+      return
+    }
+
     if (!action) return
     const targetIndex = enemies.findIndex((enemy) => enemy.id === target.id)
     const clonedEnemy = {...enemies[targetIndex]}
@@ -102,6 +150,7 @@ function EncounterCombat(encounter: Encounter) {
   
     setEnemies(clonedState);
     setIsPlayerChoiceAttack(false)
+    setIsPlayerTurn(true)
   }, [target as Entity])
 
   function handleChoiceAttack() {
@@ -113,26 +162,39 @@ function EncounterCombat(encounter: Encounter) {
     <>
       <p>{encounter.name}</p>
       <div className="encounter-combat__grid">
-        <ul className="encounter-combat__enemies">
-          {enemies.map((enemy) =>
-            <li key={enemy.id}><EntityRender entity={enemy} setTarget={setTarget} /></li>
-          )}
-        </ul>
+        <div className="encounter-combat__board">
+          <ul className="encounter-combat__enemies">
+            {enemies.map((enemy) =>
+              <li key={enemy.id}><EntityRender entity={enemy} setTarget={setTarget} /></li>
+            )}
+          </ul>
 
-        <p>Party group will be a loop based on a "party" variable.</p>
-        <ul>
-          <li>Party 1</li>
-          <li>Party 2</li>
-          <li>Party 3</li>
-          <li>Party 4</li>
-        </ul>
-      </div>
+          <p>Party group will be a loop based on a "party" variable.</p>
+          <ul>
+            {partyMembers.map((party) =>
+              <li key={party.id}><EntityRender entity={party} setTarget={setTarget}/></li>
+            )}
+          </ul>
+        </div>
 
-      <div>
-        <p>Choices</p>
-        <button type="button" onClick={handleChoiceAttack}>Basic Attack (5 damage)</button>
-        <ConditionalElement isShow={isPlayerChoiceAttack} element={<p>Choose target</p>} />
-        {target.name ? <p>Target: {target.name}</p> : null}
+        <div className="encounter-combat__choices">
+          { isPlayerTurn && target.isParty 
+            ? <>
+                <p>Choices</p>
+                <ul>
+                  <button type="button" onClick={handleChoiceAttack}>Basic Attack (5 damage)</button>
+                  <li><button>Drink potion</button></li>
+                  <li><button>Pass</button></li>
+                  <li><button>Retreat</button></li>
+                </ul>
+                
+                <ConditionalElement isShow={isPlayerChoiceAttack} element={<p>Choose target</p>} />
+                {target.name && !target.isParty ? <p>Target: {target.name}</p> : null}
+              </>
+            : null
+          }
+          
+        </div>
       </div>
     </>
   )

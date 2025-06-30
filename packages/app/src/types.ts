@@ -20,6 +20,7 @@ export type Entity = {
   health?: number,
   id: number,
   isLive?: boolean,
+  isParty?: boolean,
   isSelectable?: boolean,
   name: string,
   weapon?: Weapon

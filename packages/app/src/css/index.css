@@ -25,3 +25,9 @@ body {
     --color-neutral-1: #f7f7f7;
   }
 }
+
+/* TODO: Split into its own file */
+.encounter-combat__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
