@@ -7,7 +7,6 @@ function EncounterCombat(encounter: Encounter) {
   const [isPlayerChoiceAttack, setIsPlayerChoiceAttack] = useState(false)
   const [target, setTarget] = useState({} as Entity)
   const [action, setAction] = useState({} as Action)
-  const [activeEntity, setActiveEntity] = useState({} as Entity)
   const [isPlayerTurn, setIsPlayerTurn] = useState(true)
 
   const bow: Weapon = {
@@ -168,7 +167,7 @@ function EncounterCombat(encounter: Encounter) {
               <li key={enemy.id}><EntityRender entity={enemy} setTarget={setTarget} /></li>
             )}
           </ul>
-          
+
           <ul className="encounter-combat__entities">
             {partyMembers.map((party) =>
               <li key={party.id}><EntityRender entity={party} setTarget={setTarget}/></li>
