@@ -6,7 +6,7 @@ function FrameParty(player: Entity) {
       <p>Player details:</p>
       <ul>
         <li>Name: {player.name}</li>
-        <li>Weapon: {player.weapon.name}</li>
+        { player?.weapon ? <li>Weapon: {player.weapon.name}</li> : null }
       </ul>
     </aside>
   )
