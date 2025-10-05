@@ -23,7 +23,8 @@ export type Entity = {
   isParty?: boolean,
   isSelectable?: boolean,
   name: string,
-  weapon?: Weapon
+  weapon?: Weapon,
+  agility?: number | undefined
 }
 
 export type PropsConditionalText = {
