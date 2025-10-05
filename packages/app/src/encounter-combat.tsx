@@ -4,7 +4,7 @@ import ConditionalElement from "./conditional-element"
 import EntityRender from "./entity-render"
 
 function EncounterCombat(encounter: Encounter) {
-  const [isPlayerChoiceAttack, setIsPlayerChoiceAttack] = useState(false)
+  const [canSelectPlayer, setCanSelectPlayer] = useState(false)
   const [target, setTarget] = useState({} as Entity)
   const [action, setAction] = useState({} as Action)
   const [isPlayerTurn, setIsPlayerTurn] = useState(true)
@@ -36,7 +36,7 @@ function EncounterCombat(encounter: Encounter) {
     id: 1412412,
     name: 'Goblin Archer',
     isLive: true,
-    isSelectable: isPlayerChoiceAttack,
+    isSelectable: canSelectPlayer,
     weapon: weapons.bow
   }
 
@@ -45,7 +45,7 @@ function EncounterCombat(encounter: Encounter) {
     id: 7583171,
     name: 'Goblin Mage',
     isLive: true,
-    isSelectable: isPlayerChoiceAttack,
+    isSelectable: canSelectPlayer,
     weapon: weapons.staff
   }
 
@@ -54,7 +54,7 @@ function EncounterCombat(encounter: Encounter) {
     id: 9137541097,
     name: 'Goblin Swordsman',
     isLive: true,
-    isSelectable: isPlayerChoiceAttack,
+    isSelectable: canSelectPlayer,
     weapon: weapons.sword
   }
 
@@ -63,7 +63,7 @@ function EncounterCombat(encounter: Encounter) {
     id: 91741071,
     name: 'Goblin Healer',
     isLive: true,
-    isSelectable: isPlayerChoiceAttack,
+    isSelectable: canSelectPlayer,
     weapon: weapons.wand
   }
 
@@ -73,7 +73,7 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Party Swordsman',
     isLive: true,
     isParty: true,
-    isSelectable: !isPlayerChoiceAttack,
+    isSelectable: !canSelectPlayer,
     weapon: weapons.sword
   }
 
@@ -83,7 +83,7 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Party Barbarian',
     isLive: true,
     isParty: true,
-    isSelectable: !isPlayerChoiceAttack,
+    isSelectable: !canSelectPlayer,
     weapon: weapons.sword
   }
 
@@ -93,7 +93,7 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Party Wizard',
     isLive: true,
     isParty: true,
-    isSelectable: !isPlayerChoiceAttack,
+    isSelectable: !canSelectPlayer,
     weapon: weapons.staff
   }
 
@@ -103,7 +103,7 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Party Healer',
     isLive: true,
     isParty: true,
-    isSelectable: !isPlayerChoiceAttack,
+    isSelectable: !canSelectPlayer,
     weapon: weapons.wand
   }
 
@@ -113,14 +113,13 @@ function EncounterCombat(encounter: Encounter) {
   useEffect(() => {
     const clonedEnemies = [...enemies]
     clonedEnemies.forEach((enemy) => {
-      enemy.isSelectable = isPlayerChoiceAttack
+      enemy.isSelectable = canSelectPlayer
     })
     setEnemies(clonedEnemies)
-  }, [isPlayerChoiceAttack])
+  }, [canSelectPlayer])
 
   useEffect(() => {
     if (target.isParty) {
-      setIsPlayerChoiceAttack(true)
       return
     }
 
@@ -148,12 +147,12 @@ function EncounterCombat(encounter: Encounter) {
     clonedState[targetIndex] = clonedEnemy
   
     setEnemies(clonedState);
-    setIsPlayerChoiceAttack(false)
+    setCanSelectPlayer(false)
     setIsPlayerTurn(true)
   }, [target as Entity])
 
   function handleChoiceAttack() {
-    setIsPlayerChoiceAttack(true)
+    setCanSelectPlayer(true)
     setAction({'type': "attack", "healthValue": -5 })
   }
 
@@ -186,7 +185,7 @@ function EncounterCombat(encounter: Encounter) {
                   <li><button>Retreat</button></li>
                 </ul>
                 
-                <ConditionalElement isShow={isPlayerChoiceAttack} element={<p>Choose target</p>} />
+                <ConditionalElement isShow={canSelectPlayer} element={<p>Choose target</p>} />
                 {target.name && !target.isParty ? <p>Target: {target.name}</p> : null}
               </>
             : null
