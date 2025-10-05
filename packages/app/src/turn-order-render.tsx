@@ -14,7 +14,7 @@ function TurnOrderRender({entities, turnIndex}: test) {
       <ul>
         {
           turnOrder.map((entity, index) =>
-            <li key={entity.id} style={{ color: index % entities.length === turnIndex ? 'yellow' : 'inherit' }}>{entity.name}</li>
+            <li key={entity.id} style={{ color: turnIndex % entities.length === index ? 'yellow' : 'inherit' }}>{entity.name}</li>
           )
         }
       </ul>

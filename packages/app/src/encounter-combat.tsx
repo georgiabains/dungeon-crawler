@@ -9,7 +9,7 @@ function EncounterCombat(encounter: Encounter) {
   const [target, setTarget] = useState({} as Entity)
   const [action, setAction] = useState({} as Action)
   const [isPlayerTurn, setIsPlayerTurn] = useState(true)
-  const [turnIndex, setTurnIndex] = useState(-1)
+  const [turnIndex, setTurnIndex] = useState(0)
 
   const bow: Weapon = {
     attack: 5,
@@ -131,7 +131,9 @@ function EncounterCombat(encounter: Encounter) {
   }, [canSelectPlayer])
 
   useEffect(() => {
+    if (Object.keys(target).length === 0) return
     if (target.isParty) {
+      setIsPlayerTurn(true)
       return
     }
 
@@ -160,9 +162,20 @@ function EncounterCombat(encounter: Encounter) {
   
     setEnemies(clonedState);
     setCanSelectPlayer(false)
-    setIsPlayerTurn(true)
+    setIsPlayerTurn(false)
     setTurnIndex(turnIndex + 1)
   }, [target as Entity])
+
+  useEffect(() => {
+    if (isPlayerTurn) return
+
+    // need to check if it's the player's turn
+
+    // setTimeout(() => {
+    //   setTurnIndex(turnIndex + 1)
+    //   console.log(turnIndex)
+    // }, 1000)    
+  }, [turnIndex])
 
   function handleChoiceAttack() {
     setCanSelectPlayer(true)
