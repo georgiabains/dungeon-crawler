@@ -8,6 +8,7 @@ function EncounterCombat(encounter: Encounter) {
   const [target, setTarget] = useState({} as Entity)
   const [action, setAction] = useState({} as Action)
   const [isPlayerTurn, setIsPlayerTurn] = useState(true)
+  const [turnIndex, setTurnIndex] = useState(0)
 
   const bow: Weapon = {
     attack: 5,
@@ -37,7 +38,8 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Goblin Archer',
     isLive: true,
     isSelectable: canSelectPlayer,
-    weapon: weapons.bow
+    weapon: weapons.bow,
+    agility: 18,
   }
 
   const GoblinMage: Entity = {
@@ -46,7 +48,8 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Goblin Mage',
     isLive: true,
     isSelectable: canSelectPlayer,
-    weapon: weapons.staff
+    weapon: weapons.staff,
+    agility: 13,
   }
 
   const GoblinSwordsman: Entity = {
@@ -55,7 +58,8 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Goblin Swordsman',
     isLive: true,
     isSelectable: canSelectPlayer,
-    weapon: weapons.sword
+    weapon: weapons.sword,
+    agility: 9,
   }
 
   const GoblinHealer: Entity = {
@@ -64,7 +68,8 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Goblin Healer',
     isLive: true,
     isSelectable: canSelectPlayer,
-    weapon: weapons.wand
+    weapon: weapons.wand,
+    agility: 16,
   }
 
   const PartySwordsman: Entity = {
@@ -74,7 +79,8 @@ function EncounterCombat(encounter: Encounter) {
     isLive: true,
     isParty: true,
     isSelectable: !canSelectPlayer,
-    weapon: weapons.sword
+    weapon: weapons.sword,
+    agility: 8,
   }
 
   const PartyBarbarian: Entity = {
@@ -84,7 +90,8 @@ function EncounterCombat(encounter: Encounter) {
     isLive: true,
     isParty: true,
     isSelectable: !canSelectPlayer,
-    weapon: weapons.sword
+    weapon: weapons.sword,
+    agility: 10,
   }
 
   const PartyWizard: Entity = {
@@ -94,7 +101,8 @@ function EncounterCombat(encounter: Encounter) {
     isLive: true,
     isParty: true,
     isSelectable: !canSelectPlayer,
-    weapon: weapons.staff
+    weapon: weapons.staff,
+    agility: 12,
   }
 
   const PartyHealer: Entity = {
@@ -104,11 +112,18 @@ function EncounterCombat(encounter: Encounter) {
     isLive: true,
     isParty: true,
     isSelectable: !canSelectPlayer,
-    weapon: weapons.wand
+    weapon: weapons.wand,
+    agility: 15,
   }
+
+  
+
 
   const [enemies, setEnemies] = useState([GoblinArcher, GoblinHealer, GoblinMage, GoblinSwordsman])
   const partyMembers = [PartySwordsman, PartyBarbarian, PartyWizard, PartyHealer]
+
+  const turnOrder = [...enemies, ...partyMembers]
+  turnOrder.sort((a: Entity, b: Entity) => b.agility! - a.agility!)
 
   useEffect(() => {
     const clonedEnemies = [...enemies]
@@ -159,6 +174,14 @@ function EncounterCombat(encounter: Encounter) {
   return (
     <>
       <p>{encounter.name}</p>
+      <p>Turn order</p>
+      <ul>
+        {
+          turnOrder.map((entity, index) =>
+            <li key={entity.id} style={{ color: turnIndex === index ?'yellow' : '' }}>{entity.name}</li>
+          )
+        }
+      </ul>
       <div className="encounter-combat__grid">
         <div className="encounter-combat__board">
           <ul className="encounter-combat__entities">
