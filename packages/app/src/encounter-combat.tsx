@@ -2,13 +2,14 @@ import { useEffect, useState } from "react"
 import { Action, Encounter, Entity, Weapon } from "./types"
 import ConditionalElement from "./conditional-element"
 import EntityRender from "./entity-render"
+import TurnOrderRender from "./turn-order-render"
 
 function EncounterCombat(encounter: Encounter) {
   const [canSelectPlayer, setCanSelectPlayer] = useState(false)
   const [target, setTarget] = useState({} as Entity)
   const [action, setAction] = useState({} as Action)
   const [isPlayerTurn, setIsPlayerTurn] = useState(true)
-  const [turnIndex, setTurnIndex] = useState(0)
+  const [turnIndex, setTurnIndex] = useState(-1)
 
   const bow: Weapon = {
     attack: 5,
@@ -37,7 +38,7 @@ function EncounterCombat(encounter: Encounter) {
     id: 1412412,
     name: 'Goblin Archer',
     isLive: true,
-    isSelectable: canSelectPlayer,
+    isSelectable: false,
     weapon: weapons.bow,
     agility: 18,
   }
@@ -47,7 +48,7 @@ function EncounterCombat(encounter: Encounter) {
     id: 7583171,
     name: 'Goblin Mage',
     isLive: true,
-    isSelectable: canSelectPlayer,
+    isSelectable: false,
     weapon: weapons.staff,
     agility: 13,
   }
@@ -57,7 +58,7 @@ function EncounterCombat(encounter: Encounter) {
     id: 9137541097,
     name: 'Goblin Swordsman',
     isLive: true,
-    isSelectable: canSelectPlayer,
+    isSelectable: false,
     weapon: weapons.sword,
     agility: 9,
   }
@@ -67,7 +68,7 @@ function EncounterCombat(encounter: Encounter) {
     id: 91741071,
     name: 'Goblin Healer',
     isLive: true,
-    isSelectable: canSelectPlayer,
+    isSelectable: false,
     weapon: weapons.wand,
     agility: 16,
   }
@@ -78,7 +79,7 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Party Swordsman',
     isLive: true,
     isParty: true,
-    isSelectable: !canSelectPlayer,
+    isSelectable: false,
     weapon: weapons.sword,
     agility: 8,
   }
@@ -89,7 +90,7 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Party Barbarian',
     isLive: true,
     isParty: true,
-    isSelectable: !canSelectPlayer,
+    isSelectable: false,
     weapon: weapons.sword,
     agility: 10,
   }
@@ -100,7 +101,7 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Party Wizard',
     isLive: true,
     isParty: true,
-    isSelectable: !canSelectPlayer,
+    isSelectable: false,
     weapon: weapons.staff,
     agility: 12,
   }
@@ -111,19 +112,15 @@ function EncounterCombat(encounter: Encounter) {
     name: 'Party Healer',
     isLive: true,
     isParty: true,
-    isSelectable: !canSelectPlayer,
+    isSelectable: false,
     weapon: weapons.wand,
-    agility: 15,
+    agility: 20,
   }
-
-  
-
 
   const [enemies, setEnemies] = useState([GoblinArcher, GoblinHealer, GoblinMage, GoblinSwordsman])
   const partyMembers = [PartySwordsman, PartyBarbarian, PartyWizard, PartyHealer]
 
-  const turnOrder = [...enemies, ...partyMembers]
-  turnOrder.sort((a: Entity, b: Entity) => b.agility! - a.agility!)
+  const allEntites = [...enemies, ...partyMembers]
 
   useEffect(() => {
     const clonedEnemies = [...enemies]
@@ -164,6 +161,7 @@ function EncounterCombat(encounter: Encounter) {
     setEnemies(clonedState);
     setCanSelectPlayer(false)
     setIsPlayerTurn(true)
+    setTurnIndex(turnIndex + 1)
   }, [target as Entity])
 
   function handleChoiceAttack() {
@@ -174,14 +172,9 @@ function EncounterCombat(encounter: Encounter) {
   return (
     <>
       <p>{encounter.name}</p>
-      <p>Turn order</p>
-      <ul>
-        {
-          turnOrder.map((entity, index) =>
-            <li key={entity.id} style={{ color: turnIndex === index ?'yellow' : '' }}>{entity.name}</li>
-          )
-        }
-      </ul>
+
+      <TurnOrderRender entities={allEntites} turnIndex={turnIndex} />
+
       <div className="encounter-combat__grid">
         <div className="encounter-combat__board">
           <ul className="encounter-combat__entities">
@@ -198,7 +191,7 @@ function EncounterCombat(encounter: Encounter) {
         </div>
 
         <div className="encounter-combat__choices">
-          { isPlayerTurn && target.isParty 
+          { isPlayerTurn
             ? <>
                 <p>Choices</p>
                 <ul>
@@ -213,7 +206,6 @@ function EncounterCombat(encounter: Encounter) {
               </>
             : null
           }
-          
         </div>
       </div>
     </>
