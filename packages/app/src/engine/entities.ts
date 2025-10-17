@@ -8,20 +8,20 @@ import { GameWorld } from "../types"
 type Entity = string // TODO: move to types.ts
 
 /**
- * Return updated game state with new entity.
- * @param state - Game state.
+ * Return updated Game World with new entity.
+ * @param world - Game World.
  * @returns Array<GameWorld, Entity>
  */
-export function createEntity(currentState: GameWorld): { 
-  state: GameWorld, 
+export function createEntity(currentWorld: GameWorld): { 
+  world: GameWorld, 
   entity: Entity
 } {
-  const entity = currentState.newEntityId
-  const entities = new Set(currentState.entities).add(entity)
+  const entity = currentWorld.newEntityId
+  const entities = new Set(currentWorld.entities).add(entity)
 
   return {
-    state: {
-      ...currentState,
+    world: {
+      ...currentWorld,
       newEntityId: crypto.randomUUID(),
       entities
     },

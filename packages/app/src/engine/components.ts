@@ -10,16 +10,16 @@ type Entity = string // TODO: Replace with import
  * @param name - Component name.
  * @param data - Component data.
  * @param entity - Entity.
- * @param state - Game state.
+ * @param world - Game world.
  * @returns 
  */
 export function setComponent(
   name: ComponentName,
   data: unknown,
   entity: Entity,
-  state: GameWorld,
+  world: GameWorld,
 ): GameWorld {
-  const updatedComponents = new Map(state.components)
+  const updatedComponents = new Map(world.components)
 
   // This allows setComponent to perform both "add" and "update" functions as we 
   // look for a specfic component name with a fallback to creating a new map
@@ -32,7 +32,7 @@ export function setComponent(
   updatedComponents.set(name, newOrUpdatedComponent)
 
   return {
-    ...state,
+    ...world,
     components: updatedComponents
   }
 }
@@ -40,13 +40,13 @@ export function setComponent(
 /**
  * Return component data, if present.
  * @param name - Component name
- * @param state - Game State
+ * @param world - Game World
  * @returns Component data or false
  */
 export function getComponent(
   name: ComponentName, 
-  state: GameWorld
+  world: GameWorld
 ): ComponentData | Boolean {
-  return state.components.get(name) ?? false
+  return world.components.get(name) ?? false
 }
 

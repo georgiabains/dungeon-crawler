@@ -25,7 +25,7 @@ function Game() {
 
   // create entity
   const update = Entities.createEntity(GameWorld)
-  GameWorld = update.state
+  GameWorld = update.world
   const newEntity = update.entity
 
   // trial adding 100 health to my entity
@@ -42,7 +42,7 @@ function Game() {
 
   // trial adding health and attack to new Entity
   const secondUpdate = Entities.createEntity(GameWorld)
-  GameWorld = secondUpdate.state
+  GameWorld = secondUpdate.world
   const differentEntity = secondUpdate.entity
 
   let differentEntityComponents = Components.setComponent(Symbols.health, healthComponent, differentEntity, GameWorld)
