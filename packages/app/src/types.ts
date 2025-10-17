@@ -1,6 +1,6 @@
 import { JSX, ReactElement } from 'react'
 
-export type ComponentName = symbol
+export type ComponentName = string
 export type ComponentData = Map<string, unknown> // TODO: replace string with Entity
 // unknown because a component can be anything
 
