@@ -1,4 +1,4 @@
-import { Encounter } from './types'
+import { Encounter } from '../types'
 
 function EncounterBaseline(encounter: Encounter) {
   return (

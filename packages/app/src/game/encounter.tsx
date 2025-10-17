@@ -1,4 +1,4 @@
-import { Encounter, EncounterParam } from './types'
+import { Encounter, EncounterParam } from '../types'
 import encounterData from './encounter-data.json'
 import EncounterBaseline from './encounter-baseline'
 import EncounterCombat from './encounter-combat'

@@ -1,4 +1,4 @@
-import { Entity } from './types'
+import { Entity } from '../types'
 
 function FrameParty(player: Entity) {
   return (

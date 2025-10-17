@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { sum_test } from '@workspace/library'
-import { GameState } from './types'
+import { GameState } from '../types'
 import ScreenGame from './screen-game'
 import ScreenInitialisation from './screen-initialisation'
-import { loadFromSessionStorage } from './utils/utils'
+import { loadFromSessionStorage } from '../utils/utils'
 
-import Symbols from './utils/symbols'
-import { Entities, Components, Systems } from './engine/engine'
+import Symbols from '../utils/symbols'
+import { Entities, Components, Systems } from '../engine/engine'
 
 function Game() {
   // Test that confirms running WASM for calculations is possible

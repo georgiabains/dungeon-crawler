@@ -1,4 +1,4 @@
-import { Entity } from "./types"
+import { Entity } from "../types"
 
 type test = {
   entities: Array<Entity>,

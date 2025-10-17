@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { Action, Encounter, Entity, Weapon } from "./types"
-import ConditionalElement from "./conditional-element"
+import { Action, Encounter, Entity, Weapon } from "../types"
+import ConditionalElement from "../conditional-element"
 import EntityRender from "./entity-render"
 import TurnOrderRender from "./turn-order-render"
 
