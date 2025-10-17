@@ -9,7 +9,7 @@ export type Component = {
   data: ComponentData
 }
 
-export type GameState = {
+export type GameWorld = {
   newEntityId: string, // TODO: replace with Entity assuming type Entity = string
   entities: Set<string>, // TODO: replace with Entity
   components: Map<Component["name"], Component["data"]> // TODO: replace with Entity

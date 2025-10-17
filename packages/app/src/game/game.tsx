@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { sum_test } from '@workspace/library'
-import { GameState } from '../types'
+import { GameWorld } from '../types'
 import ScreenGame from './screen-game'
 import ScreenInitialisation from './screen-initialisation'
 import { loadFromSessionStorage } from '../utils/utils'
@@ -17,39 +17,39 @@ function Game() {
   //   window.sessionStorage.setItem('player', JSON.stringify(player))
   // }, [player as Entity])
 
-  let GameState: GameState = {
+  let GameWorld: GameWorld = {
     newEntityId: crypto.randomUUID(),
     entities: new Set(),
     components: new Map(),
   }
 
   // create entity
-  const update = Entities.createEntity(GameState)
-  GameState = update.state
+  const update = Entities.createEntity(GameWorld)
+  GameWorld = update.state
   const newEntity = update.entity
 
   // trial adding 100 health to my entity
   const healthComponent = 100
-  const newComponent = Components.setComponent(Symbols.health, healthComponent, newEntity, GameState)  
+  const newComponent = Components.setComponent(Symbols.health, healthComponent, newEntity, GameWorld)  
 
-  GameState = newComponent
+  GameWorld = newComponent
 
   // trial adding attack
   const attackComponent = 5
-  const newComponentAttack = Components.setComponent(Symbols.attack, attackComponent, newEntity, GameState)
+  const newComponentAttack = Components.setComponent(Symbols.attack, attackComponent, newEntity, GameWorld)
 
-  GameState = newComponentAttack
+  GameWorld = newComponentAttack
 
   // trial adding health and attack to new Entity
-  const secondUpdate = Entities.createEntity(GameState)
-  GameState = secondUpdate.state
+  const secondUpdate = Entities.createEntity(GameWorld)
+  GameWorld = secondUpdate.state
   const differentEntity = secondUpdate.entity
 
-  let differentEntityComponents = Components.setComponent(Symbols.health, healthComponent, differentEntity, GameState)
-  GameState = differentEntityComponents
+  let differentEntityComponents = Components.setComponent(Symbols.health, healthComponent, differentEntity, GameWorld)
+  GameWorld = differentEntityComponents
 
-  differentEntityComponents = Components.setComponent(Symbols.attack, attackComponent, differentEntity, GameState)
-  GameState = differentEntityComponents
+  differentEntityComponents = Components.setComponent(Symbols.attack, attackComponent, differentEntity, GameWorld)
+  GameWorld = differentEntityComponents
 
   /**
    * NOTE: Setting individual components will get messy - need to have a way to
@@ -58,9 +58,9 @@ function Game() {
    * Need to save Entity IDs even though they're UUIDs.
    */
   
-  console.log(GameState)
+  console.log(GameWorld)
   Systems.test()
-  console.log(Components.getComponent(Symbols.attack, GameState))
+  console.log(Components.getComponent(Symbols.attack, GameWorld))
 
   return player
     ? <ScreenGame player={player} />    

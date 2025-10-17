@@ -2,7 +2,7 @@
  * Engine: Components
  * - All the lovely bits of data for our Entities to have and our Systems to use.
  */
-import { ComponentName, ComponentData, GameState } from "../types"
+import { ComponentName, ComponentData, GameWorld } from "../types"
 type Entity = string // TODO: Replace with import
 
 /**
@@ -17,8 +17,8 @@ export function setComponent(
   name: ComponentName,
   data: unknown,
   entity: Entity,
-  state: GameState,
-): GameState {
+  state: GameWorld,
+): GameWorld {
   const updatedComponents = new Map(state.components)
 
   // This allows setComponent to perform both "add" and "update" functions as we 
@@ -45,7 +45,7 @@ export function setComponent(
  */
 export function getComponent(
   name: ComponentName, 
-  state: GameState
+  state: GameWorld
 ): ComponentData | Boolean {
   return state.components.get(name) ?? false
 }
