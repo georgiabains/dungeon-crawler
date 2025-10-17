@@ -17,7 +17,7 @@ export function createEntity(currentWorld: GameWorld): {
   entity: Entity
 } {
   const entity = currentWorld.newEntityId
-  const entities = new Set(currentWorld.entities).add(entity)
+  const entities = [...currentWorld.entities, entity]
 
   return {
     world: {

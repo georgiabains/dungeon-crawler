@@ -11,8 +11,14 @@ export type Component = {
 
 export type GameWorld = {
   newEntityId: string, // TODO: replace with Entity assuming type Entity = string
-  entities: Set<string>, // TODO: replace with Entity
+  entities: Array<string>, // TODO: replace with Entity
   components: Map<Component["name"], Component["data"]> // TODO: replace with Entity
+}
+
+export type System = (world: GameWorld, entities?: Array<string>) => GameWorld;
+export type SystemForEntities = {
+  run: System,
+  entities?: Array<string>
 }
 
 export type Action = {
