@@ -1,5 +1,20 @@
 import { JSX, ReactElement } from 'react'
 
+export type ComponentName = symbol
+export type ComponentData = Map<string, unknown> // TODO: replace string with Entity
+// unknown because a component can be anything
+
+export type Component = {
+  name: ComponentName,
+  data: ComponentData
+}
+
+export type GameState = {
+  newEntityId: string, // TODO: replace with Entity assuming type Entity = string
+  entities: Set<string>, // TODO: replace with Entity
+  components: Map<Component["name"], Component["data"]> // TODO: replace with Entity
+}
+
 export type Action = {
   healthValue?: number,
   type: string
