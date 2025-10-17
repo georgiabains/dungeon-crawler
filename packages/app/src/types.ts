@@ -10,7 +10,7 @@ export type Component = {
 }
 
 export type GameWorld = {
-  newEntityId: string, // TODO: replace with Entity assuming type Entity = string
+  newEntity: string, // TODO: replace with Entity assuming type Entity = string
   entities: Array<string>, // TODO: replace with Entity
   components: Map<Component["name"], Component["data"]> // TODO: replace with Entity
 }

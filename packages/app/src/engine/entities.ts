@@ -16,13 +16,13 @@ export function createEntity(currentWorld: GameWorld): {
   world: GameWorld, 
   entity: Entity
 } {
-  const entity = currentWorld.newEntityId
+  const entity = currentWorld.newEntity
   const entities = [...currentWorld.entities, entity]
 
   return {
     world: {
       ...currentWorld,
-      newEntityId: crypto.randomUUID(),
+      newEntity: crypto.randomUUID(),
       entities
     },
     entity
