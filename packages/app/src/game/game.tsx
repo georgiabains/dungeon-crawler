@@ -7,6 +7,7 @@ import { loadFromSessionStorage } from '../utils/utils'
 
 import Symbols from '../utils/symbols'
 import { Entities, Components, Systems } from '../engine/engine'
+import { test } from './test'
 
 function Game() {
   // Test that confirms running WASM for calculations is possible
@@ -18,8 +19,8 @@ function Game() {
   // }, [player as Entity])
 
   let GameWorld: GameWorld = {
-    newEntityId: crypto.randomUUID(),
-    entities: new Set(),
+    newEntity: crypto.randomUUID(),
+    entities: new Array(),
     components: new Map(),
   }
 
@@ -57,10 +58,13 @@ function Game() {
    * 
    * Need to save Entity IDs even though they're UUIDs.
    */
+
+  console.log(Symbols.attack)
+  console.log(GameWorld.components)
+
   
-  console.log(GameWorld)
-  Systems.test()
-  console.log(Components.getComponent(Symbols.attack, GameWorld))
+  test(GameWorld)
+  
 
   return player
     ? <ScreenGame player={player} />    
