@@ -1,4 +1,4 @@
-import { PropsScreenInitialisation, Weapon } from './types'
+import { PropsScreenInitialisation, Weapon } from '../types'
 
 const dagger: Weapon = {
   attack: 5,

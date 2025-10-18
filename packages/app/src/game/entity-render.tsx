@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react"
-import { Entity } from "./types"
+import { Entity } from "../types"
 
 type test = {
   entity: Entity,
