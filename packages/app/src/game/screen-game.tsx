@@ -1,11 +1,11 @@
 import FrameDungeon from "./frame-dungeon"
 import FrameParty from "./frame-party"
-import { PropsPlayer } from "../types"
 
-function ScreenGame({player}: PropsPlayer) {
+function ScreenGame({game}: { game: string }) {
   return (
     <>
-      <FrameParty {...player} />
+      <p>Game ID: {game}</p>
+      <FrameParty />
       <FrameDungeon />
     </>
   )

@@ -6,17 +6,17 @@ import ScreenInitialisation from './screen-initialisation'
 import { loadFromSessionStorage } from '../utils/utils'
 
 import Symbols from '../utils/symbols'
-import { Entities, Components, Systems } from '../engine/engine'
+import { Entities, Components } from '../engine/engine'
 import { test } from './test'
 
 function Game() {
   // Test that confirms running WASM for calculations is possible
   // console.log(sum_test(2, 2))
-  const [player, setPlayer] = useState(() => loadFromSessionStorage('player'))
+  const [game, setGame] = useState(() => loadFromSessionStorage('game'))
 
-  // useEffect(() => {
-  //   window.sessionStorage.setItem('player', JSON.stringify(player))
-  // }, [player as Entity])
+  useEffect(() => {
+    window.sessionStorage.setItem('game', JSON.stringify(game))
+  }, [game])
 
   let GameWorld: GameWorld = {
     newEntity: crypto.randomUUID(),
@@ -58,17 +58,11 @@ function Game() {
    * 
    * Need to save Entity IDs even though they're UUIDs.
    */
-
-  console.log(Symbols.attack)
-  console.log(GameWorld.components)
-
-  
   test(GameWorld)
   
-
-  return player
-    ? <ScreenGame player={player} />    
-    : <ScreenInitialisation setPlayer={setPlayer} />
+  return game
+    ? <ScreenGame game={game} />    
+    : <ScreenInitialisation setGame={setGame} />
 }
 
 export default Game

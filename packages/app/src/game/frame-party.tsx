@@ -1,12 +1,55 @@
-import { Entity } from '../types'
+/**
+ * Fame: Party
+ * - Renders party details.
+ */
 
-function FrameParty(player: Entity) {
+// NOTE: Extremely IPR. Return after more systems have been created so I know what
+// components every party member needs.
+
+function FrameParty() {
+  // TODO: Make dynamic and ECS friendly, this is just placeholder data
+  const party = [
+    {
+      name: 'Morag',
+      weapon: {
+        name: 'Iron sword'
+      }
+    },
+    {
+      name: 'Boudicca',
+      weapon: {
+        name: 'Steel battleaxe'
+      }
+    },
+    {
+      name: 'Ares',
+      weapon: {
+        name: 'Dagger'
+      }
+    },
+    {
+      name: 'Alyss',
+      weapon: {
+        name: 'Hawthorne wand'
+      }
+    }
+  ]
+
   return (
     <aside>
-      <p>Player details:</p>
+      <p>Party details:</p>
       <ul>
-        <li>Name: {player.name}</li>
-        { player?.weapon ? <li>Weapon: {player.weapon.name}</li> : null }
+        {
+          party.map((member, index) => {
+            return (
+              <li key={`${member.name}-${index}`}>Name: {member.name}
+                <ul>
+                  { member?.weapon ? <li>Weapon: {member.weapon.name}</li> : null }
+                </ul>
+              </li>
+            )
+          })
+        }
       </ul>
     </aside>
   )

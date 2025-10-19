@@ -58,7 +58,8 @@ export type PropsPlayer = {
 }
 
 export type PropsScreenInitialisation = {
-  setPlayer: Function
+  setGame: Function
+  setPlayer?: Function
 }
 
 export type Weapon = {
