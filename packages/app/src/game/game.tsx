@@ -8,7 +8,6 @@ import { loadFromSessionStorage } from '../utils/utils'
 import Symbols from '../utils/symbols'
 import { Entities, Components } from '../engine/engine'
 import { updateTargetHealth } from './system-health'
-import { runSystem } from '../engine/systems'
 
 function Game() {
   // Test that confirms running WASM for calculations is possible
