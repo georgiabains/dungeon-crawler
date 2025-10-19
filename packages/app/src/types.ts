@@ -1,8 +1,9 @@
 import { JSX, ReactElement } from 'react'
 
+export type Entity = string
+
 export type ComponentName = string
-export type ComponentData = Map<string, unknown> // TODO: replace string with Entity
-// unknown because a component can be anything
+export type ComponentData = Map<Entity, unknown> // unknown because a component can be anything
 
 export type Component = {
   name: ComponentName,
@@ -10,15 +11,15 @@ export type Component = {
 }
 
 export type GameWorld = {
-  newEntity: string, // TODO: replace with Entity assuming type Entity = string
-  entities: Array<string>, // TODO: replace with Entity
-  components: Map<Component["name"], Component["data"]> // TODO: replace with Entity
+  newEntity: Entity,
+  entities: Array<Entity>,
+  components: Map<Component["name"], Component["data"]>
 }
 
-export type System = (world: GameWorld, entities?: Array<string>) => GameWorld;
+export type System = (world: GameWorld, entities?: Array<Entity>) => GameWorld;
 export type SystemForEntities = {
   run: System,
-  entities?: Array<string>
+  entities?: Array<Entity>
 }
 
 export type Action = {
