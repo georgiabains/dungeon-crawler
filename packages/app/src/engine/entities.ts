@@ -3,9 +3,7 @@
  * - Numerical representation for any distinct "item", "character" etc. in the
  *   game.
  */
-import { GameWorld } from "../types"
-
-type Entity = string // TODO: move to types.ts
+import { Entity, GameWorld } from "../types"
 
 /**
  * Return updated Game World with new entity.

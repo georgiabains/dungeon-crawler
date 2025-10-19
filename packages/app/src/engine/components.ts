@@ -2,8 +2,7 @@
  * Engine: Components
  * - All the lovely bits of data for our Entities to have and our Systems to use.
  */
-import { ComponentName, ComponentData, GameWorld } from "../types"
-type Entity = string // TODO: Replace with import
+import { Entity, ComponentName, ComponentData, GameWorld } from "../types"
 
 /**
  * 
