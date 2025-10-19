@@ -16,7 +16,11 @@ export type GameWorld = {
   components: Map<Component["name"], Component["data"]>
 }
 
-export type System = (world: GameWorld, entities?: Array<Entity>) => GameWorld;
+export type System = (world: GameWorld, params?: any) => GameWorld
+export type SystemPayload = {
+  system: System,
+  params?: any
+}
 export type SystemForEntities = {
   run: System,
   entities?: Array<Entity>

@@ -7,7 +7,7 @@ import { loadFromSessionStorage } from '../utils/utils'
 
 import Symbols from '../utils/symbols'
 import { Entities, Components } from '../engine/engine'
-import { test } from './test'
+import { updateTargetHealth } from './system-health'
 
 function Game() {
   // Test that confirms running WASM for calculations is possible
@@ -58,7 +58,10 @@ function Game() {
    * 
    * Need to save Entity IDs even though they're UUIDs.
    */
-  test(GameWorld)
+  
+  // The following changes an entitie's health value by the specified delta
+  GameWorld = updateTargetHealth(GameWorld, {entity: GameWorld.entities[0], healthDelta: -10})
+  console.log('game world', GameWorld)
   
   return game
     ? <ScreenGame game={game} />    

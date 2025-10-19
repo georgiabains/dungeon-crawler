@@ -2,8 +2,7 @@
  * Engine: Systems
  * - Functions that perform an action on Entities.
  */
-import { ComponentName, GameWorld, System, SystemForEntities } from "../types"
-import { findEntitiesWithComponents } from "./helpers/helpers";
+import { GameWorld, System, SystemPayload } from '../types'
 
 /**
  * Run all systems.
@@ -13,27 +12,38 @@ import { findEntitiesWithComponents } from "./helpers/helpers";
  * @returns {GameWorld}
  */
 export function runSystems(
-  systems: Array<SystemForEntities>, 
+  systems: Array<SystemPayload>,
   world: GameWorld
 ): GameWorld {
-  return systems.reduce((currentWorld, { run, entities}) => 
-    run(currentWorld, entities), world)
+  return systems.reduce((currentWorld, { system, params }) => 
+    system(currentWorld, params),
+    world
+  )
 }
 
 /**
- * Create system.
- * - Required components must exist in Game World
- * @param requiredComponents - Components required for system to run.
- * @param system - System function.
- * @returns {SystemBody}
+ * Run one system.
+ * @param singleSystem - Specific system to run.
+ * @param world - Game World.
+ * @returns {GameWorld}
  */
-export function createSystem(
-  requiredComponents: Array<ComponentName>,
-  system: System
-): System {
-  return (world, entities) => {
-    const matchingEntities = entities 
-      ?? findEntitiesWithComponents(requiredComponents, world)
-    return system(world, matchingEntities)
+export function runSystem(
+  singleSystem: SystemPayload,
+  world: GameWorld
+): GameWorld {
+  const { system, params } = singleSystem
+  return system(world, params)
+}
+
+/**
+ * Create system with optional parameters.
+ * @param {System} system - System function.
+ * @param {any} [defaultParams] - Default parameters for created system.
+ * @returns {System}
+ */
+export function createSystem(system: System, defaultParams?: any): System {
+  return (world: GameWorld, params?: any) => {
+    const usedParams = params ?? defaultParams
+    return system(world, usedParams)
   }
 }
