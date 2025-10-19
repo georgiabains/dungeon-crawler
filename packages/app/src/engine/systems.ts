@@ -41,7 +41,7 @@ export function runSystem(
  * @param {any} [defaultParams] - Default parameters for created system.
  * @returns {System}
  */
-export function createSystem(system: System, defaultParams: any): System {
+export function createSystem(system: System, defaultParams?: any): System {
   return (world: GameWorld, params?: any) => {
     const usedParams = params ?? defaultParams
     return system(world, usedParams)
