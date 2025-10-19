@@ -37,7 +37,7 @@ export type EncounterParam = {
   type: string
 }
 
-export type Entity = {
+export type EntityOld = {
   health?: number,
   id: number,
   isLive?: boolean,
@@ -54,7 +54,7 @@ export type PropsConditionalText = {
 }
 
 export type PropsPlayer = {
-  player: Entity
+  player: EntityOld
 }
 
 export type PropsScreenInitialisation = {

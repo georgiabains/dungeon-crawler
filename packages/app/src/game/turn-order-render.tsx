@@ -1,12 +1,12 @@
-import { Entity } from "../types"
+import { EntityOld } from "../types"
 
 type test = {
-  entities: Array<Entity>,
+  entities: Array<EntityOld>,
   turnIndex: number
 }
 
 function TurnOrderRender({entities, turnIndex}: test) {
-  const turnOrder = [...entities].sort((a: Entity, b: Entity) => b.agility! - a.agility!)
+  const turnOrder = [...entities].sort((a: EntityOld, b: EntityOld) => b.agility! - a.agility!)
 
   return (
     <>

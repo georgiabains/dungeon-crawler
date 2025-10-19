@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react"
-import { Entity } from "../types"
+import { EntityOld } from "../types"
 
 type test = {
-  entity: Entity,
-  setTarget?: Dispatch<SetStateAction<Entity>>
+  entity: EntityOld,
+  setTarget?: Dispatch<SetStateAction<EntityOld>>
 }
 
 function EntityRender({entity, setTarget }: test) {

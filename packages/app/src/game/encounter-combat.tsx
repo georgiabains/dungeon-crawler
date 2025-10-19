@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
-import { Action, Encounter, Entity, Weapon } from "../types"
+import { Action, Encounter, EntityOld, Weapon } from "../types"
 import ConditionalElement from "../conditional-element"
 import EntityRender from "./entity-render"
 import TurnOrderRender from "./turn-order-render"
 
 function EncounterCombat(encounter: Encounter) {
   const [canSelectPlayer, setCanSelectPlayer] = useState(false)
-  const [target, setTarget] = useState({} as Entity)
+  const [target, setTarget] = useState({} as EntityOld)
   const [action, setAction] = useState({} as Action)
   const [isPlayerTurn, setIsPlayerTurn] = useState(true)
   const [turnIndex, setTurnIndex] = useState(0)
@@ -33,7 +33,7 @@ function EncounterCombat(encounter: Encounter) {
   
   const weapons = { bow, sword, staff, wand }
 
-  const GoblinArcher: Entity = {
+  const GoblinArcher: EntityOld = {
     health: 100,
     id: 1412412,
     name: 'Goblin Archer',
@@ -43,7 +43,7 @@ function EncounterCombat(encounter: Encounter) {
     agility: 18,
   }
 
-  const GoblinMage: Entity = {
+  const GoblinMage: EntityOld = {
     health: 100,
     id: 7583171,
     name: 'Goblin Mage',
@@ -53,7 +53,7 @@ function EncounterCombat(encounter: Encounter) {
     agility: 13,
   }
 
-  const GoblinSwordsman: Entity = {
+  const GoblinSwordsman: EntityOld = {
     health: 100,
     id: 9137541097,
     name: 'Goblin Swordsman',
@@ -63,7 +63,7 @@ function EncounterCombat(encounter: Encounter) {
     agility: 9,
   }
 
-  const GoblinHealer: Entity = {
+  const GoblinHealer: EntityOld = {
     health: 100,
     id: 91741071,
     name: 'Goblin Healer',
@@ -73,7 +73,7 @@ function EncounterCombat(encounter: Encounter) {
     agility: 16,
   }
 
-  const PartySwordsman: Entity = {
+  const PartySwordsman: EntityOld = {
     health: 100,
     id: 193471049,
     name: 'Party Swordsman',
@@ -84,7 +84,7 @@ function EncounterCombat(encounter: Encounter) {
     agility: 8,
   }
 
-  const PartyBarbarian: Entity = {
+  const PartyBarbarian: EntityOld = {
     health: 100,
     id: 4029752,
     name: 'Party Barbarian',
@@ -95,7 +95,7 @@ function EncounterCombat(encounter: Encounter) {
     agility: 10,
   }
 
-  const PartyWizard: Entity = {
+  const PartyWizard: EntityOld = {
     health: 100,
     id: 310741,
     name: 'Party Wizard',
@@ -106,7 +106,7 @@ function EncounterCombat(encounter: Encounter) {
     agility: 12,
   }
 
-  const PartyHealer: Entity = {
+  const PartyHealer: EntityOld = {
     health: 100,
     id: 9753781871,
     name: 'Party Healer',
@@ -164,7 +164,7 @@ function EncounterCombat(encounter: Encounter) {
     setCanSelectPlayer(false)
     setIsPlayerTurn(false)
     setTurnIndex(turnIndex + 1)
-  }, [target as Entity])
+  }, [target as EntityOld])
 
   useEffect(() => {
     if (isPlayerTurn) return
