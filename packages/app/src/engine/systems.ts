@@ -22,6 +22,20 @@ export function runSystems(
 }
 
 /**
+ * Run one system.
+ * @param singleSystem - Specific system to run.
+ * @param world - Game World.
+ * @returns {GameWorld}
+ */
+export function runSystem(
+  singleSystem: SystemPayload,
+  world: GameWorld
+): GameWorld {
+  const { system, params } = singleSystem
+  return system(world, params)
+}
+
+/**
  * Create system with optional parameters.
  * @param {System} system - System function.
  * @param {any} [defaultParams] - Default parameters for created system.
