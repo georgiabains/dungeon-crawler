@@ -29,18 +29,18 @@ const updateTargetHealthSystem: System = (
     return world
   }
   
+  // TODO: Move copying to some helper function
+  const components = new Map(world.components)
+  const healthMap = new Map(world.components.get(Symbols.health))
+  
   // Calculate new health
   const updatedTargetHealth = targetHealth + healthDelta
 
-  const updatedHealthComponent = structuredClone(
-    world.components.get(Symbols.health)!
-  ).set(entity, updatedTargetHealth)
+  healthMap.set(entity, updatedTargetHealth)
+  components.set(Symbols.health, healthMap)
 
-  const components = new Map(world.components)
-    .set(Symbols.health, updatedHealthComponent)
-
-  return {
-    ...world,
+  return { 
+    ...world, 
     components
   }
 }
