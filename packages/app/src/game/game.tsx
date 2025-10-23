@@ -24,6 +24,12 @@ function Game() {
     components: new Map(),
   }
 
+  // NOTE: I could create a helper to bulk create/initialise entities, e.g. 
+  // when creating an encounter. This might be cheaper than returning a new
+  // GameWorld after every "enemy" creation
+  // Could also help with bulk-adding components to an entity
+  // e.g. createEntity({ components: [string] })
+
   // create entity
   const update = Entities.createEntity(GameWorld)
   GameWorld = update.world
