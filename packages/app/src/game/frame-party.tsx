@@ -2,9 +2,11 @@
  * Fame: Party
  * - Renders party details.
  */
-import { useEffect } from 'react'
+import { ReactElement, useEffect, useRef } from 'react'
 import { useGameStore } from './game-store'
 import Symbols from '../utils/symbols'
+import { getComponent } from '../engine/components'
+import { ComponentData } from '../types'
 
 // NOTE: Extremely IPR. Return after more systems have been created so I know what
 // components every party member needs.
@@ -12,6 +14,7 @@ import Symbols from '../utils/symbols'
 function FrameParty() {
   const GameWorld = useGameStore((s) => s.world)
   const addEntityWithComponents = useGameStore((s) => s.addEntityWithComponents)
+  const counter = useRef(0)
 
   // NOTE: Debugging only
   // TODO: Remove
@@ -19,59 +22,39 @@ function FrameParty() {
     console.log('game world', GameWorld)
   }, [GameWorld])
 
-  // TODO: Make dynamic and ECS friendly, this is just placeholder data
-  const party = [
-    {
-      name: 'Morag',
-      weapon: {
-        name: 'Iron sword'
-      }
-    },
-    {
-      name: 'Boudicca',
-      weapon: {
-        name: 'Steel battleaxe'
-      }
-    },
-    {
-      name: 'Ares',
-      weapon: {
-        name: 'Dagger'
-      }
-    },
-    {
-      name: 'Alyss',
-      weapon: {
-        name: 'Hawthorne wand'
-      }
-    }
-  ]
+  // Temporary until I add name inputs
+  const names = ['Morag', 'Boudicca', 'Ares', 'Alyss']
 
   /**
    * Add party member to game store.
    */
   function handleAddParty() {
     addEntityWithComponents([
+      { name: Symbols.name, data: names[counter.current]},
       { name: Symbols.health, data: 100 }, 
-      { name: Symbols.attack, data: 5 }
+      { name: Symbols.attack, data: 5 },
+      { name: Symbols.party, data: true }
     ])
+
+    counter.current += 1
   }
 
   return (
     <aside>
-      <button onClick={handleAddParty}>Add party member</button>
+      {counter.current < 4 ? <button onClick={handleAddParty}>Add party member</button> : null}
+      
       <p>Party details:</p>
       <ul>
+        {/* NOTE: I hate this */}
         {
-          party.map((member, index) => {
-            return (
-              <li key={`${member.name}-${index}`}>Name: {member.name}
-                <ul>
-                  { member?.weapon ? <li>Weapon: {member.weapon.name}</li> : null }
-                </ul>
-              </li>
-            )
-          })
+          getComponent(Symbols.party, GameWorld) 
+            ? [...(getComponent(Symbols.party, GameWorld) as ComponentData).keys()].map((entity): ReactElement => {
+                return (
+                  <li key={entity}>Name: {(getComponent(Symbols.name, GameWorld) as ComponentData).get(entity) as string}
+                </li>
+                )
+              })
+            : null
         }
       </ul>
     </aside>

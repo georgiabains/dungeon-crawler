@@ -7,7 +7,8 @@
 const Symbols = {
   attack: "Attack",
   health: "Health",
-  name:  "Name"
+  name:  "Name",
+  party: "Party"
 }
 
 export default Symbols
