@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { sum_test } from '@workspace/library'
-import { GameWorld } from '../types'
 import ScreenGame from './screen-game'
 import ScreenInitialisation from './screen-initialisation'
 import { loadFromSessionStorage } from '../utils/utils'
@@ -8,6 +7,7 @@ import { loadFromSessionStorage } from '../utils/utils'
 import Symbols from '../utils/symbols'
 import { Entities, Components } from '../engine/engine'
 import { updateTargetHealth } from './system-health'
+import { useGameStore } from './game-store'
 
 function Game() {
   // Test that confirms running WASM for calculations is possible
@@ -18,11 +18,9 @@ function Game() {
     window.sessionStorage.setItem('game', JSON.stringify(game))
   }, [game])
 
-  let GameWorld: GameWorld = {
-    newEntity: crypto.randomUUID(),
-    entities: new Array(),
-    components: new Map(),
-  }
+  let GameWorld = useGameStore((s) => s.world)
+
+  console.log(GameWorld)
 
   // NOTE: I could create a helper to bulk create/initialise entities, e.g. 
   // when creating an encounter. This might be cheaper than returning a new
@@ -67,7 +65,6 @@ function Game() {
   
   // The following changes an entitie's health value by the specified delta
   GameWorld = updateTargetHealth(GameWorld, {entity: GameWorld.entities[0], healthDelta: -10})
-  console.log('game world', GameWorld)
   
   return game
     ? <ScreenGame game={game} />    

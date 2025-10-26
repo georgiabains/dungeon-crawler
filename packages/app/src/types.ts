@@ -11,9 +11,14 @@ export type Component = {
 }
 
 export type GameWorld = {
-  newEntity: Entity,
   entities: Array<Entity>,
-  components: Map<Component["name"], Component["data"]>
+  components: Map<Component["name"], Component["data"]>,
+  newEntity: Entity
+}
+
+export type GameStore = {
+  world: GameWorld,
+  updateWorld: (fn: (world: GameWorld) => GameWorld) => void,
 }
 
 export type System = (world: GameWorld, params?: any) => GameWorld
