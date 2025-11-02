@@ -4,7 +4,9 @@ import './css/index.css'
 import Game from './game/game.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Game />
-  </StrictMode>,
+  // <StrictMode>
+  //   <Game />
+  // </StrictMode>,
+
+  <Game />
 )

@@ -18,9 +18,9 @@ function FrameParty() {
 
   // NOTE: Debugging only
   // TODO: Remove
-  useEffect(() => {
-    console.log('game world', GameWorld)
-  }, [GameWorld])
+  // useEffect(() => {
+  //   console.log('game world', GameWorld)
+  // }, [GameWorld])
 
   // Temporary until I add name inputs
   const names = ['Morag', 'Boudicca', 'Ares', 'Alyss']
@@ -31,7 +31,8 @@ function FrameParty() {
   function handleAddParty() {
     addEntityWithComponents([
       { name: Symbols.name, data: names[counter.current]},
-      { name: Symbols.health, data: 100 }, 
+      { name: Symbols.health.current, data: 100 }, 
+      { name: Symbols.health.max, data: 100 }, 
       { name: Symbols.attack, data: 5 },
       { name: Symbols.party, data: true }
     ])

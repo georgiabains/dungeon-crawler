@@ -21,7 +21,7 @@ const updateTargetHealthSystem: System = (
 
   const { entity, healthDelta } = params
   const targetHealth = world.components
-    .get(Symbols.health)
+    .get(Symbols.health.current)
     ?.get(entity) as number | undefined
   
   if (!targetHealth) {
@@ -31,13 +31,13 @@ const updateTargetHealthSystem: System = (
   
   // TODO: Move copying to some helper function
   const components = new Map(world.components)
-  const healthMap = new Map(world.components.get(Symbols.health))
+  const healthMap = new Map(world.components.get(Symbols.health.current))
   
   // Calculate new health
   const updatedTargetHealth = targetHealth + healthDelta
 
   healthMap.set(entity, updatedTargetHealth)
-  components.set(Symbols.health, healthMap)
+  components.set(Symbols.health.current, healthMap)
 
   return { 
     ...world, 

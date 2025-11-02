@@ -1,24 +1,32 @@
-import { Dispatch, SetStateAction } from "react"
-import { EntityOld } from "../types"
+import { Entity } from "../types"
+import { useGameStore } from './game-store'
+import { getComponent } from "../engine/components"
+import Symbols from "../utils/symbols"
 
-type test = {
-  entity: EntityOld,
-  setTarget?: Dispatch<SetStateAction<EntityOld>>
+type EntityRenderProps = {
+  entity: Entity,
+  canTarget?: boolean,
 }
 
-function EntityRender({entity, setTarget }: test) {
-  function handleSelectTarget() {
-    if (!setTarget) return
-    setTarget(entity)
+function EntityRender({ entity, canTarget }: EntityRenderProps) {
+  const GameWorld = useGameStore((s) => s.world)
+
+  const entityData = {
+    id: entity,
+    name: (getComponent(Symbols.name, GameWorld) as Map<Entity, string>).get(entity),
+    health: {
+      current: (getComponent(Symbols.health.current, GameWorld) as Map<Entity, string>).get(entity),
+      max: (getComponent(Symbols.health.max, GameWorld) as Map<Entity, string>).get(entity)
+    }
   }
-  
+
   return (
     <>
-      <div>{entity.name}</div>
-      <div>{entity.health}</div>
-      <div>{entity?.weapon?.name}</div>
-      {entity?.isLive ? null : 'Dead'}
-      {entity?.isSelectable ? <button onClick={handleSelectTarget}>Select target</button> : ''}
+      {entityData.name}
+      <br />
+      {entityData.health.current}/{entityData.health.max}
+      <br />
+      {canTarget ? <button type="button">Target</button> : null}
     </>
   )
 }

@@ -6,9 +6,14 @@
 
 const Symbols = {
   attack: "Attack",
-  health: "Health",
+  health: {
+    current: "Current Health",
+    max: "Max Health",
+    temp: "Temp Health"
+  },
   name:  "Name",
-  party: "Party"
+  party: "Party",
+  currentEncounter: "Current Encounter"
 }
 
 export default Symbols
