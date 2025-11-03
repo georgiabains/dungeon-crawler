@@ -6,16 +6,18 @@
 import {create} from 'zustand'
 import { GameWorld, GameStore, GameStoreComponent } from '../types'
 import { Entities, Components } from '../engine/engine'
+import { getComponent } from '../engine/components'
 
 /**
  * Create global Game Store.
  */
-export const useGameStore = create<GameStore>((set) => ({
+export const useGameStore = create<GameStore>((set, get) => ({
   world: initGameWorld(),
   updateWorld: (fn: any) => set((state: any) => ({ world: fn(state.world) })),
   addEntityWithComponents: ((components: Array<GameStoreComponent>) => 
     set((state) => ({ world: createManyComponents(state.world, components) }))
-  )
+  ),
+  getWorld: () => get().world
 }))
 
 /**
