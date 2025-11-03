@@ -6,44 +6,18 @@ import Symbols from "../utils/symbols"
 import EntityRender from "./entity-render"
 import TurnOrderRender from "./turn-order-render"
 
-function EncounterCombat(encounter: Encounter) {
+type EncounterCombatProps = {
+  encounter: Encounter,
+  enemyList: Array<Entity>
+}
+
+function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
   const GameWorld = useGameStore((s) => s.world)
-  const addEntityWithComponents = useGameStore((s) => s.addEntityWithComponents)
 
   const partyComponent = getComponent(Symbols.party, GameWorld) as Map<Entity, boolean>
   const party = [...partyComponent.keys()] as Array<Entity>
-
-  const [hasEnemyList, setHasEnemyList] = useState(false)
-  const enemyNames = ['Goblin Swordsman', 'Goblin Healer', 'Goblin Wizard', 'Goblin Rogue']
-  const [enemyList, setEnemyList] = useState([] as Array<Entity>)
   
   const [turnIndex, setTurnIndex] = useState(0)
-
-  useEffect(() => {
-    if (hasEnemyList) return
-
-    enemyNames.forEach((name) => {
-      addEntityWithComponents([
-        { name: Symbols.name, data: name},
-        { name: Symbols.health.current, data: 100 }, 
-        { name: Symbols.health.max, data: 100 }, 
-        { name: Symbols.attack, data: 5 },
-        { name: Symbols.agility, data: Math.floor(Math.random() * 100)},
-        { name: Symbols.currentEncounter, data: true}
-      ])
-      setHasEnemyList(true)
-    })
-  }, [hasEnemyList])
-
-  // NOTE: Not 100% sure this is the best approach but it works for now
-  // Does enemy creation/initialisation need to go in a System?
-  const enemyComponent = getComponent(Symbols.currentEncounter, GameWorld) as Map<Entity, boolean>
-
-  useEffect(() => {
-    if (!enemyComponent) return
-
-    setEnemyList([...enemyComponent.keys()])
-  }, [enemyComponent])
 
   // TODO: Move into distinct system? Is that what a system is for/how it should be structured?
   function sortEntities() {
