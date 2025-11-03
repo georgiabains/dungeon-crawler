@@ -13,7 +13,8 @@ const Symbols = {
   },
   name:  "Name",
   party: "Party",
-  currentEncounter: "Current Encounter"
+  currentEncounter: "Current Encounter",
+  agility: "Agility"
 }
 
 export default Symbols

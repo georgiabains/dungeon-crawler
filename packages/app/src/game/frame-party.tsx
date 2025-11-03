@@ -34,6 +34,7 @@ function FrameParty() {
       { name: Symbols.health.current, data: 100 }, 
       { name: Symbols.health.max, data: 100 }, 
       { name: Symbols.attack, data: 5 },
+      { name: Symbols.agility, data: Math.floor(Math.random() * 100)},
       { name: Symbols.party, data: true }
     ])
 
