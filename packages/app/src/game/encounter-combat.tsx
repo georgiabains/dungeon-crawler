@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Encounter, Entity } from "../types"
 import { useGameStore } from './game-store'
 import { getComponent } from "../engine/components"
 import Symbols from "../utils/symbols"
 import EntityRender from "./entity-render"
 import TurnOrderRender from "./turn-order-render"
+import TurnIndexContext from "./context-turn-index"
 
 type EncounterCombatProps = {
   encounter: Encounter,
@@ -16,8 +17,19 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
 
   const partyComponent = getComponent(Symbols.party, GameWorld) as Map<Entity, boolean>
   const party = [...partyComponent.keys()] as Array<Entity>
-  
   const [turnIndex, setTurnIndex] = useState(0)
+
+  useEffect(() => {
+    const currentEntity = sortedEntities[turnIndex % sortedEntities.length]
+
+    if (!enemyList.includes(currentEntity)) {
+      return
+    }
+
+    // NOTE: Seems weird to increase turn index here and in Entity Action list
+    // Maybe I do just use a callback function????
+    setTurnIndex(turnIndex + 1)
+  }, [turnIndex])
 
   // TODO: Move into distinct system? Is that what a system is for/how it should be structured?
   function sortEntities() {
@@ -34,31 +46,35 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
   const sortedEntities = sortEntities()
 
   function getIsTurn(entity: Entity) {
-    return entity === sortedEntities[turnIndex]
+    return entity === sortedEntities[turnIndex % sortedEntities.length]
   }
 
   return (
-    <>
+    <TurnIndexContext.Provider value={{ turnIndex, setTurnIndex }}>
       <p>{encounter.name}</p>
 
       <TurnOrderRender entities={sortedEntities} turnIndex={turnIndex} />
 
       <ul>
         {enemyList.map((enemy) => {
-          return(
-            <li key={enemy}><EntityRender entity={enemy} canTarget={true} isTurn={getIsTurn(enemy) as boolean} /></li>
+          return (
+            <li key={enemy}>
+              <EntityRender entity={enemy} isTurn={getIsTurn(enemy) as boolean} />
+            </li>
           )
         })}
       </ul>
 
       <ul>
         {party.map((member) => {
-          return(
-            <li key={member}><EntityRender entity={member as Entity} isTurn={getIsTurn(member) as boolean} /></li>
+          return (
+            <li key={member}>
+              <EntityRender entity={member as Entity} isTurn={getIsTurn(member) as boolean} />
+            </li>
           )
         })}
       </ul>
-    </>
+    </TurnIndexContext.Provider>
   )
 }
 
