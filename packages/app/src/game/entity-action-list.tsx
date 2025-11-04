@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react"
+import { useContext } from "react"
 import TurnIndexContext from "./context-turn-index"
 
 type EntityRenderProps = {
