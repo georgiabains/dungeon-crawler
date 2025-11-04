@@ -55,6 +55,7 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
 
       <TurnOrderRender entities={sortedEntities} turnIndex={turnIndex} />
 
+      <p><strong>Board</strong></p>
       <ul>
         {enemyList.map((enemy) => {
           return (
