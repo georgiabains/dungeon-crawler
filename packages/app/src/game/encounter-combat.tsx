@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { Encounter, Entity } from "../types"
 import { useGameStore } from './game-store'
 import { getComponent } from "../engine/components"
@@ -6,6 +6,7 @@ import Symbols from "../utils/symbols"
 import EntityRender from "./entity-render"
 import TurnOrderRender from "./turn-order-render"
 import TurnIndexContext from "./context-turn-index"
+import TargetContext from "./context-target"
 
 type EncounterCombatProps = {
   encounter: Encounter,
@@ -18,6 +19,7 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
   const partyComponent = getComponent(Symbols.party, GameWorld) as Map<Entity, boolean>
   const party = [...partyComponent.keys()] as Array<Entity>
   const [turnIndex, setTurnIndex] = useState(0)
+  const [target, setTarget] = useState([] as Array<string>)
 
   useEffect(() => {
     const currentEntity = sortedEntities[turnIndex % sortedEntities.length]
@@ -55,26 +57,28 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
 
       <TurnOrderRender entities={sortedEntities} turnIndex={turnIndex} />
 
-      <p><strong>Board</strong></p>
-      <ul>
-        {enemyList.map((enemy) => {
-          return (
-            <li key={enemy}>
-              <EntityRender entity={enemy} isTurn={getIsTurn(enemy) as boolean} />
-            </li>
-          )
-        })}
-      </ul>
+      <TargetContext.Provider value={{ target, setTarget }}>
+        <p><strong>Board</strong></p>
+        <ul>
+          {enemyList.map((enemy) => {
+            return (
+              <li key={enemy}>
+                <EntityRender entity={enemy} isTurn={getIsTurn(enemy) as boolean} />
+              </li>
+            )
+          })}
+        </ul>
 
-      <ul>
-        {party.map((member) => {
-          return (
-            <li key={member}>
-              <EntityRender entity={member as Entity} isTurn={getIsTurn(member) as boolean} />
-            </li>
-          )
-        })}
-      </ul>
+        <ul>
+          {party.map((member) => {
+            return (
+              <li key={member}>
+                <EntityRender entity={member as Entity} isTurn={getIsTurn(member) as boolean} />
+              </li>
+            )
+          })}
+        </ul>
+      </TargetContext.Provider>
     </TurnIndexContext.Provider>
   )
 }

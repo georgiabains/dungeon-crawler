@@ -1,5 +1,10 @@
 import { useContext } from "react"
 import TurnIndexContext from "./context-turn-index"
+import { useGameStore } from "./game-store"
+import { getComponent } from "../engine/components"
+import Symbols from "../utils/symbols"
+import { Entity } from "../types"
+import TargetContext from "./context-target"
 
 type EntityRenderProps = {
   isParty: boolean,
@@ -8,17 +13,19 @@ type EntityRenderProps = {
 
 function EntityActionList({ isParty, isTurn }: EntityRenderProps) {
   const { turnIndex, setTurnIndex } = useContext(TurnIndexContext)
+  const GameWorld = useGameStore((s) => s.world)
+  const {setTarget} = useContext(TargetContext)
 
   function handleAction(action = '') {
     switch (action) {
       case 'attack':
-        console.log('action click')
+        setTarget(Array.from((getComponent(Symbols.currentEncounter, GameWorld) as Map<Entity, boolean>)?.keys()))
         break
       default:
         console.log('no action')
     }
     
-    increaseTurnIndex()
+    // increaseTurnIndex()
   }
 
   /**
