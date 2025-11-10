@@ -1,6 +1,5 @@
 import { Entity } from "../types"
 import { useGameStore } from './game-store'
-import { getComponent } from "../engine/components"
 import Symbols from "../utils/symbols"
 import EntityActionList from "./entity-action-list"
 import { useContext, useEffect } from "react"
@@ -15,7 +14,7 @@ type EntityRenderProps = {
 }
 
 function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
-  const GameWorld = useGameStore((s) => s.world)
+  const getComponent = useGameStore((s) => s.getComponent)
   const { turnIndex, setTurnIndex } = useContext(TurnIndexContext)
   const {target} = useContext(TargetContext)
   const [canTarget, setCanTarget] = useState(false)
@@ -28,12 +27,12 @@ function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
 
   const entityData = {
     id: entity,
-    name: (getComponent(Symbols.name, GameWorld) as Map<Entity, string>).get(entity),
+    name: (getComponent(Symbols.name) as Map<Entity, string>).get(entity),
     health: {
-      current: (getComponent(Symbols.health.current, GameWorld) as Map<Entity, string>).get(entity),
-      max: (getComponent(Symbols.health.max, GameWorld) as Map<Entity, string>).get(entity)
+      current: (getComponent(Symbols.health.current) as Map<Entity, string>).get(entity),
+      max: (getComponent(Symbols.health.max) as Map<Entity, string>).get(entity)
     },
-    isParty: (getComponent(Symbols.party, GameWorld) as Map<Entity, boolean>).get(entity) ?? false
+    isParty: (getComponent(Symbols.party) as Map<Entity, boolean>).get(entity) ?? false
   }
 
   function handleTurn() {
