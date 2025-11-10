@@ -22,21 +22,19 @@ function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
   const { target, payload } = useContext(TargetContext)
   const [canTarget, setCanTarget] = useState(false)
 
-  useEffect(() => {
-    if (target.includes(entity)) {
-      setCanTarget(true)
-    }
-  }, [target])
-
   const entityData = {
     id: entity,
     name: (getComponent(Symbols.name) as Map<Entity, string>).get(entity),
     health: {
-      current: (getComponent(Symbols.health.current) as Map<Entity, string>).get(entity),
-      max: (getComponent(Symbols.health.max) as Map<Entity, string>).get(entity)
+      current: (getComponent(Symbols.health.current) as Map<Entity, number>).get(entity) ?? 0,
+      max: (getComponent(Symbols.health.max) as Map<Entity, number>).get(entity)
     },
     isParty: (getComponent(Symbols.party) as Map<Entity, boolean>).get(entity) ?? false
   }
+
+  useEffect(() => {
+    setCanTarget(target.includes(entity) && entityData.health.current > 0)
+  }, [target])
 
   function handleTurn() {
     if (!entityData.isParty) {
@@ -71,7 +69,7 @@ function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
 
   return (
     <>
-      {entityData.name}
+      {entityData.name} {entityData.health.current as number <= 0 ? 'Dead' : ''}
       <br />
       {entityData.health.current}/{entityData.health.max}
       <br />
