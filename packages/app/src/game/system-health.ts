@@ -24,7 +24,8 @@ const updateTargetHealthSystem: System = (
     .get(Symbols.health.current)
     ?.get(entity) as number | undefined
   
-  if (!targetHealth) {
+  // 0 is truthy
+  if (typeof targetHealth !== 'number' || isNaN(targetHealth)) {
     console.warn(`Entity: ${entity} doesn\'t have a health component`)
     return world
   }
