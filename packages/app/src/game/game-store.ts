@@ -13,7 +13,7 @@ import { getComponent } from '../engine/components'
  */
 export const useGameStore = create<GameStore>((set, get) => ({
   world: initGameWorld(),
-  updateWorld: (fn: any) => set((state: any) => ({ world: fn(state.world) })),
+  updateWorld: (world: GameWorld) => set(() => ({ world })),
   addEntityWithComponents: ((components: Array<GameStoreComponent>) => 
     set((state) => ({ world: createManyComponents(state.world, components) }))
   ),

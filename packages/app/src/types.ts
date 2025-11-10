@@ -23,7 +23,7 @@ export type GameStoreComponent = {
 
 export type GameStore = {
   world: GameWorld,
-  updateWorld: (fn: (world: GameWorld) => GameWorld) => void,
+  updateWorld: (world: GameWorld) => void,
   addEntityWithComponents: (components: Array<GameStoreComponent>) => void,
   getWorld: () => GameWorld,
   getComponent: (component: string) => any,
