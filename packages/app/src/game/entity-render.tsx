@@ -7,6 +7,7 @@ import TurnIndexContext from "./context-turn-index"
 import TargetContext from "./context-target"
 import { useState } from "react"
 import { updateTargetHealth } from "./system-health"
+import { getRandomInt } from "../utils/utils"
 
 type EntityRenderProps = {
   entity: Entity,
@@ -19,7 +20,7 @@ function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
   const updateWorld = useGameStore((s) => s.updateWorld)
   const getComponent = useGameStore((s) => s.getComponent)
   const { turnIndex, setTurnIndex } = useContext(TurnIndexContext)
-  const { target, payload } = useContext(TargetContext)
+  const { target, setTarget, payload, setPayload } = useContext(TargetContext)
   const [canTarget, setCanTarget] = useState(false)
 
   const entityData = {
@@ -37,13 +38,16 @@ function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
   }, [target])
 
   function handleTurn() {
-    if (!entityData.isParty) {
-      setTurnIndex(turnIndex + 1) // TODO: Needs to be helper function b/c it's also used in entity-action-list
-      console.log('ai turn')
-      return
-    }
+    if (entityData.isParty) return
 
-    console.log('player turn')
+    const players = Array.from((getComponent(Symbols.party) as Map<Entity, boolean>)?.keys())
+    const targetParty = players[getRandomInt(players.length)]
+    
+    const newWorld = updateTargetHealth(getWorld(), {entity: targetParty, healthDelta: -Math.abs(payload.damage.attack)}) // NOTE: I don't really need to use -Math.abs(number), I could rework all "damage" or "attack" values to be negative, and pass through one "update target health" value. Relies on me keeping track of this, however
+    updateWorld(newWorld)
+
+    setTurnIndex(turnIndex + 1) // TODO: Needs to be helper function b/c it's also used in entity-action-list
+    console.log('ai turn index', turnIndex)
   }
 
   function handleTargetClick() {
@@ -58,11 +62,18 @@ function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
     }
 
     // NOTE: This relies on a player only being able to make 1 action per turn
+    setTarget([])
     setTurnIndex(turnIndex + 1)
   }
 
   useEffect(() => {
     if (!isTurn) return
+
+    setPayload({
+      damage: {
+        attack: getComponent(Symbols.attack)?.get(entity) ?? 0
+      }
+    })
 
     handleTurn()
   }, [isTurn])

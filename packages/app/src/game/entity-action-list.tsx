@@ -31,17 +31,10 @@ function EntityActionList({ entity, isParty, isTurn }: EntityRenderProps) {
         })
         break
       default:
+        setTarget([])
+        setTurnIndex(turnIndex + 1)
         console.log('no action')
     }
-    
-    // increaseTurnIndex()
-  }
-
-  /**
-   * Increase contextual turn index after Entity turn has completed.
-   */
-  function increaseTurnIndex() {
-    setTurnIndex(turnIndex + 1)
   }
 
   if (!isTurn || !isParty) {
