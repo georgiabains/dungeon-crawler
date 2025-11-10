@@ -6,6 +6,7 @@ import { useContext, useEffect } from "react"
 import TurnIndexContext from "./context-turn-index"
 import TargetContext from "./context-target"
 import { useState } from "react"
+import { updateTargetHealth } from "./system-health"
 
 type EntityRenderProps = {
   entity: Entity,
@@ -14,9 +15,11 @@ type EntityRenderProps = {
 }
 
 function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
+  const getWorld = useGameStore((s) => s.getWorld)
+  const updateWorld = useGameStore((s) => s.updateWorld)
   const getComponent = useGameStore((s) => s.getComponent)
   const { turnIndex, setTurnIndex } = useContext(TurnIndexContext)
-  const {target} = useContext(TargetContext)
+  const { target, payload } = useContext(TargetContext)
   const [canTarget, setCanTarget] = useState(false)
 
   useEffect(() => {
@@ -46,7 +49,18 @@ function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
   }
 
   function handleTargetClick() {
-    console.log(entity)
+    // TODO: Can I refactor these if statements? Could use contextual object keys?
+    if (payload.damage) {
+      const newWorld = updateTargetHealth(getWorld(), {entity, healthDelta: -Math.abs(payload.damage.attack)}) // NOTE: I don't really need to use -Math.abs(number), I could rework all "damage" or "attack" values to be negative, and pass through one "update target health" value. Relies on me keeping track of this, however
+      updateWorld(newWorld)
+    }
+
+    if (payload.healing) {
+      // TODO: Handle healing
+    }
+
+    // NOTE: This relies on a player only being able to make 1 action per turn
+    setTurnIndex(turnIndex + 1)
   }
 
   useEffect(() => {
@@ -63,7 +77,7 @@ function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
       <br />
       {canTarget ? <button type="button" onClick={handleTargetClick}>Target</button> : null}
       <br />
-      <EntityActionList isParty={entityData.isParty} isTurn={isTurn} />
+      <EntityActionList entity={entity} isParty={entityData.isParty} isTurn={isTurn} />
     </>
   )
 }

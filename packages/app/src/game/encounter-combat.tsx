@@ -20,6 +20,7 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
   const party = [...partyComponent.keys()] as Array<Entity>
   const [turnIndex, setTurnIndex] = useState(0)
   const [target, setTarget] = useState([] as Array<string>)
+  const [payload, setPayload] = useState({})
 
   useEffect(() => {
     const currentEntity = sortedEntities[turnIndex % sortedEntities.length]
@@ -57,7 +58,7 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
 
       <TurnOrderRender entities={sortedEntities} turnIndex={turnIndex} />
 
-      <TargetContext.Provider value={{ target, setTarget }}>
+      <TargetContext.Provider value={{ target, setTarget, payload, setPayload }}>
         <p><strong>Board</strong></p>
         <ul>
           {enemyList.map((enemy) => {
