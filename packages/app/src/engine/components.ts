@@ -45,7 +45,7 @@ export function setComponent(
 export function getComponent(
   name: ComponentName, 
   world: GameWorld
-): ComponentData | Boolean {
-  return world.components.get(name) ?? false
+): ComponentData {
+  return world.components.get(name) ?? new Map()
 }
 
