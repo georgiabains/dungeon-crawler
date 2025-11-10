@@ -12,3 +12,12 @@ export function loadFromSessionStorage(key: string): string {
   const item = window.sessionStorage.getItem(key);
   return item != null ? JSON.parse(item) : '';
 }
+
+/**
+ * Return random number up to the maximum.
+ * @param {number} max - Maximum number.
+ * @returns 
+ */
+export function getRandomInt(max: number): number {
+  return Math.floor(Math.random() * max);
+}
