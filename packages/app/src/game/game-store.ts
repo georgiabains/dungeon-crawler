@@ -4,7 +4,7 @@
  * Global state management for GameWorld.
  */
 import {create} from 'zustand'
-import { GameWorld, GameStore, GameStoreComponent } from '../types'
+import { ComponentData, GameWorld, GameStore, GameStoreComponent } from '../types'
 import { Entities, Components } from '../engine/engine'
 import { getComponent } from '../engine/components'
 
@@ -17,7 +17,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   addEntityWithComponents: ((components: Array<GameStoreComponent>) => 
     set((state) => ({ world: createManyComponents(state.world, components) }))
   ),
-  getWorld: () => get().world
+  getWorld: () => get().world,
+  getComponent: ((component: string) => getWorldComponent(component, get().world))
 }))
 
 /**
@@ -52,4 +53,16 @@ function createManyComponents(
   )
 
   return updatedWorld
+}
+
+/**
+ * Return component in world.
+ * - While this leverages the getComponent function from the Engine, it reduces
+ * the need for most components to initialise GameWorld as a variable.
+ * @param {string} component - Component name.
+ * @param {GameWorld} world - Current game world.
+ * @returns {Map}
+ */
+function getWorldComponent(component: string, world: GameWorld): ComponentData {
+  return getComponent(component, world)
 }
