@@ -3,7 +3,6 @@
  * 
  * Create context to track what Entities an ability targets.
  */
-
 import { createContext } from "react"
 
 type TargetContextType = {

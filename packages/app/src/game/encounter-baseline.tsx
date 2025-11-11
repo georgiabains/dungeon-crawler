@@ -1,3 +1,8 @@
+/**
+ * Encounter: Baseline
+ * 
+ * Default (text-only) encounter.
+ */
 import { Encounter } from '../types'
 
 function EncounterBaseline(encounter: Encounter) {

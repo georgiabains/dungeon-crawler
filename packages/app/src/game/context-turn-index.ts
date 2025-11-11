@@ -3,7 +3,6 @@
  * 
  * Create context for a combat encounter's turn index.
  */
-
 import { createContext } from "react"
 
 const TurnIndexContext = createContext({
