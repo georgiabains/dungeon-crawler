@@ -3,7 +3,7 @@
  * 
  * Base combat encounter render.
  */
-import { ReactElement, useState } from "react"
+import { ReactElement, useMemo, useEffect, useRef, useState } from "react"
 import { Encounter, Entity } from "../types"
 import { useGameStore } from './game-store'
 
@@ -38,12 +38,18 @@ function EncounterCombat({
   const getComponent = useGameStore((s) => s.getComponent)
   const partyComponent = getComponent(Symbols.party) as Map<Entity, boolean>
   const party = [...partyComponent.keys()] as Array<Entity>
-  const sortedEntities = sortEntities()
+  const encounterID = useRef(crypto.randomUUID())
+  const sortedEntities = useMemo(() => sortEntities(), [encounterID.current])
   
   // States
   const [turnIndex, setTurnIndex] = useState(0)
   const [target, setTarget] = useState([] as Array<string>)
   const [payload, setPayload] = useState({})
+
+  // Update encounter ID when enemy list changes
+  useEffect(() => {
+    encounterID.current = crypto.randomUUID()
+  }, [enemyList])
 
   // TODO: Move into distinct system? Is that what a system is for/how it should be structured?
   function sortEntities() {
@@ -70,7 +76,11 @@ function EncounterCombat({
     <TurnIndexContext.Provider value={{ turnIndex, setTurnIndex }}>
       <p>{encounter.name}</p>
 
-      <TurnOrderRender entities={sortedEntities} turnIndex={turnIndex} />
+      <TurnOrderRender 
+        entities={sortedEntities} 
+        id={encounterID.current} 
+        turnIndex={turnIndex} 
+      />
 
       <TargetContext.Provider value={{ target, setTarget, payload, setPayload }}>
         <p><strong>Board</strong></p>
