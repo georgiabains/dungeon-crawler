@@ -35,7 +35,7 @@ function TurnOrderRender({
   const agilityMap = useMemo(() => getComponent(Symbols.agility) as Map<Entity, number>, [id])
 
   return (
-    <>
+    <aside>
       <p>Turn order</p>
       <ul>
         {
@@ -49,7 +49,7 @@ function TurnOrderRender({
           )
         }
       </ul>
-    </>
+    </aside>
   )
 }
 
