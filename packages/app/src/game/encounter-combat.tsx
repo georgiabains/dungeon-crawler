@@ -1,23 +1,45 @@
-import { useEffect, useState } from "react"
+/**
+ * Encounter: Combat.
+ * 
+ * Base combat encounter render.
+ */
+import { ReactElement, useState } from "react"
 import { Encounter, Entity } from "../types"
 import { useGameStore } from './game-store'
-import { getComponent } from "../engine/components"
-import Symbols from "../utils/symbols"
+
+// Components
 import EntityRender from "./entity-render"
 import TurnOrderRender from "./turn-order-render"
-import TurnIndexContext from "./context-turn-index"
-import TargetContext from "./context-target"
 
+// Contexts
+import TargetContext from "./context-target"
+import TurnIndexContext from "./context-turn-index"
+
+// Utils
+import Symbols from "../utils/symbols"
+
+// Custom types
 type EncounterCombatProps = {
   encounter: Encounter,
   enemyList: Array<Entity>
 }
 
-function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
-  const GameWorld = useGameStore((s) => s.world)
-
-  const partyComponent = getComponent(Symbols.party, GameWorld) as Map<Entity, boolean>
+/**
+ * Render combat encounter.
+ * @param {object} data - Encounter data.
+ * @param {Encounter} data.encounter - Encounter information.
+ * @param {Array<Entity>} data.enemyList - List of enemy IDs.
+ * @returns {ReactElement}
+ */
+function EncounterCombat({ 
+  encounter, 
+  enemyList 
+}: EncounterCombatProps): ReactElement {
+  const getComponent = useGameStore((s) => s.getComponent)
+  const partyComponent = getComponent(Symbols.party) as Map<Entity, boolean>
   const party = [...partyComponent.keys()] as Array<Entity>
+  
+  // States
   const [turnIndex, setTurnIndex] = useState(0)
   const [target, setTarget] = useState([] as Array<string>)
   const [payload, setPayload] = useState({})
@@ -27,8 +49,8 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
     const allEntities = [...party, ...enemyList]
 
     return allEntities.sort((a: Entity, b: Entity): number => {
-      const aAgility = (getComponent(Symbols.agility, GameWorld) as Map<Entity, number>).get(a) ?? 0
-      const bAgility = (getComponent(Symbols.agility, GameWorld) as Map<Entity, number>).get(b) ?? 0
+      const aAgility = (getComponent(Symbols.agility) as Map<Entity, number>).get(a) ?? 0
+      const bAgility = (getComponent(Symbols.agility) as Map<Entity, number>).get(b) ?? 0
       
       return bAgility - aAgility
     })
@@ -36,7 +58,12 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
 
   const sortedEntities = sortEntities()
 
-  function getIsTurn(entity: Entity) {
+  /**
+   * Return if it's this entity's turn.
+   * @param {Entity} entity - Entity.
+   * @returns {boolean}
+   */
+  function getIsTurn(entity: Entity): boolean {
     return entity === sortedEntities[turnIndex % sortedEntities.length]
   }
 
@@ -48,6 +75,7 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
 
       <TargetContext.Provider value={{ target, setTarget, payload, setPayload }}>
         <p><strong>Board</strong></p>
+        {/* TODO: Create a board component, or like entity-tile-render component */}
         <ul>
           {enemyList.map((enemy) => {
             return (
