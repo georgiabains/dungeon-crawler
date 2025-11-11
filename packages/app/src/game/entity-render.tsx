@@ -46,8 +46,10 @@ function EntityRender({ entity, isTurn = false }: EntityRenderProps) {
     const newWorld = updateTargetHealth(getWorld(), {entity: targetParty, healthDelta: -Math.abs(payload.damage.attack)}) // NOTE: I don't really need to use -Math.abs(number), I could rework all "damage" or "attack" values to be negative, and pass through one "update target health" value. Relies on me keeping track of this, however
     updateWorld(newWorld)
 
-    setTurnIndex(turnIndex + 1) // TODO: Needs to be helper function b/c it's also used in entity-action-list
-    console.log('ai turn index', turnIndex)
+    // Simulate AI "thinking"
+    setTimeout(() => {
+      setTurnIndex(turnIndex + 1) // TODO: Needs to be helper function b/c it's also used in entity-action-list
+    }, 500)
   }
 
   function handleTargetClick() {

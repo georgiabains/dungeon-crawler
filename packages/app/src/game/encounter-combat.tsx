@@ -22,18 +22,6 @@ function EncounterCombat({encounter, enemyList}: EncounterCombatProps) {
   const [target, setTarget] = useState([] as Array<string>)
   const [payload, setPayload] = useState({})
 
-  useEffect(() => {
-    const currentEntity = sortedEntities[turnIndex % sortedEntities.length]
-
-    if (!enemyList.includes(currentEntity)) {
-      return
-    }
-
-    // NOTE: Seems weird to increase turn index here and in Entity Action list
-    // Maybe I do just use a callback function????
-    setTurnIndex(turnIndex + 1)
-  }, [turnIndex])
-
   // TODO: Move into distinct system? Is that what a system is for/how it should be structured?
   function sortEntities() {
     const allEntities = [...party, ...enemyList]
