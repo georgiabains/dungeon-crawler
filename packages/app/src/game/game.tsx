@@ -1,29 +1,31 @@
-import { useEffect, useState } from 'react'
-import { sum_test } from '@workspace/library'
+/**
+ * Game.
+ * 
+ * Renders the game proper.
+ */
+import { ReactElement, useEffect, useState } from 'react'
+
+// Components
 import ScreenGame from './screen-game'
 import ScreenInitialisation from './screen-initialisation'
+
+// Utils
 import { loadFromSessionStorage } from '../utils/utils'
+import { sum_test } from '@workspace/library'
 
-import { updateTargetHealth } from './system-health'
-
-function Game() {
-  // Test that confirms running WASM for calculations is possible
-  // console.log(sum_test(2, 2))
+/**
+ * Render Game element.
+ * @returns {ReactElement}
+ */
+function Game(): ReactElement {
   const [game, setGame] = useState(() => loadFromSessionStorage('game'))
 
   useEffect(() => {
     window.sessionStorage.setItem('game', JSON.stringify(game))
   }, [game])
 
-  /**
-   * NOTE: Setting individual components will get messy - need to have a way to
-   * bulk update components for entities.
-   * 
-   * Need to save Entity IDs even though they're UUIDs.
-   */
-  
-  // The following changes an entitie's health value by the specified delta
-  // GameWorld = updateTargetHealth(GameWorld, {entity: GameWorld.entities[0], healthDelta: -10})
+  // Test that confirms running WASM for calculations is possible
+  // console.log(sum_test(2, 2))
   
   return game
     ? <ScreenGame game={game} />    
