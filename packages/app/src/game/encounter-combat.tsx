@@ -38,6 +38,7 @@ function EncounterCombat({
   const getComponent = useGameStore((s) => s.getComponent)
   const partyComponent = getComponent(Symbols.party) as Map<Entity, boolean>
   const party = [...partyComponent.keys()] as Array<Entity>
+  const sortedEntities = sortEntities()
   
   // States
   const [turnIndex, setTurnIndex] = useState(0)
@@ -55,8 +56,6 @@ function EncounterCombat({
       return bAgility - aAgility
     })
   }
-
-  const sortedEntities = sortEntities()
 
   /**
    * Return if it's this entity's turn.
