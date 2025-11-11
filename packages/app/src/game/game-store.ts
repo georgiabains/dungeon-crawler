@@ -3,8 +3,10 @@
  * 
  * Global state management for GameWorld.
  */
-import {create} from 'zustand'
+import { create } from 'zustand'
 import { ComponentData, GameWorld, GameStore, GameStoreComponent } from '../types'
+
+// Engine
 import { Entities, Components } from '../engine/engine'
 import { getComponent } from '../engine/components'
 
