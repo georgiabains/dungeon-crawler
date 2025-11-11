@@ -1,7 +1,15 @@
-import Symbols from "../utils/symbols"
+/**
+ * System: Health
+ * 
+ * Systems related to health values across entities.
+ */
 import { Systems } from "../engine/engine"
 import { Entity, GameWorld, System } from "../types"
 
+// Utils
+import Symbols from "../utils/symbols"
+
+// Custom types
 type UpdateTargetHealthParams = {
   entity: Entity,
   healthDelta: number
@@ -9,8 +17,8 @@ type UpdateTargetHealthParams = {
 
 /**
  * Update specific entity's health value.
- * @param world - Game World.
- * @param params - Entity and healthDelta.
+ * @param {GameWorld} world - Game World.
+ * @param {UpdateTargetHealthParams} params - Entity and health delta.
  * @returns {GameWorld}
  */
 const updateTargetHealthSystem: System = (
