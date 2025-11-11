@@ -8,7 +8,7 @@ type UpdateTargetHealthParams = {
 }
 
 /**
- * Update specific entitie's health value.
+ * Update specific entity's health value.
  * @param world - Game World.
  * @param params - Entity and healthDelta.
  * @returns {GameWorld}
