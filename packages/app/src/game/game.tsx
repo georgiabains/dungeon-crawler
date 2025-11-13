@@ -7,7 +7,7 @@ import { ReactElement, useEffect, useState } from 'react'
 
 // Components
 import ScreenGame from './screen-game'
-import ScreenInitialisation from './screen-initialisation'
+import ScreenGameMenu from './screen-game-menu'
 
 // Utils
 import { loadFromSessionStorage } from '../utils/utils'
@@ -29,7 +29,7 @@ function Game(): ReactElement {
   
   return game
     ? <ScreenGame game={game} />    
-    : <ScreenInitialisation setGame={setGame} />
+    : <ScreenGameMenu setGame={setGame} />
 }
 
 export default Game

@@ -70,7 +70,7 @@ export type PropsConditionalText = {
   element: ReactElement
 }
 
-export type PropsScreenInitialisation = {
+export type PropsScreenGameMenu = {
   setGame: Function
   setPlayer?: Function
 }
