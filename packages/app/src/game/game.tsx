@@ -17,7 +17,7 @@ import { GameMetadata } from '../types'
 
 // Utils
 import { loadFromSessionStorage } from '../utils/utils'
-import { sum_test } from '@workspace/library'
+// import { sum_test } from '@workspace/library'
 
 /**
  * Render Game element.

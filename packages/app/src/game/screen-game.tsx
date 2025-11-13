@@ -3,7 +3,7 @@
  * 
  * Render game screen.
  */
-import { ReactElement, useContext, useEffect, useState } from "react"
+import { ReactElement, useContext, useState } from "react"
 import { useGameStore } from "./game-store"
 
 // Contexts
