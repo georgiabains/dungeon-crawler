@@ -2,7 +2,7 @@
  * Fame: Party
  * - Renders party details.
  */
-import { ReactElement, useContext, useRef } from 'react'
+import { ReactElement, useContext } from 'react'
 import { useGameStore } from './game-store'
 
 // Types
@@ -22,9 +22,7 @@ import PartyContext from './context-party'
 function FrameParty(): ReactElement {
   const addEntityWithComponents = useGameStore((s) => s.addEntityWithComponents)
   const getComponent = useGameStore((s) => s.getComponent)
-  
   const { party, setParty } = useContext(PartyContext)
-  const counter = useRef(0)
 
   // Temporary until I add name inputs
   const names = ['Morag', 'Boudicca', 'Ares', 'Alyss']
@@ -34,7 +32,7 @@ function FrameParty(): ReactElement {
    */
   function handleAddParty() {
     addEntityWithComponents([
-      { name: Symbols.name, data: names[counter.current]},
+      { name: Symbols.name, data: names[party.length]},
       { name: Symbols.health.current, data: 100 }, 
       { name: Symbols.health.max, data: 100 }, 
       { name: Symbols.attack, data: 5 },
@@ -42,32 +40,33 @@ function FrameParty(): ReactElement {
       { name: Symbols.party, data: true }
     ])
 
-    counter.current += 1
     setParty([...(getComponent(Symbols.party) as ComponentData).keys()])
   }
 
   return (
     <aside>
       {
-        counter.current < 4 
+        party.length < 4
           ? <button onClick={handleAddParty}>Add party member</button> 
           : null
       }
       
-      <p>Party details:</p>
-      <ul>
-        {
-          party 
-            ? party.map((entity): ReactElement => {
-                return (
-                  <li key={entity}>
-                    Name: {(getComponent(Symbols.name) as ComponentData).get(entity) as string}
-                  </li>
-                )
-              })
-            : null
+      {
+        party.length >= 1
+          ? <div>
+              <p>Party details:</p>
+              <ul>
+                {party.map((entity): ReactElement => {
+                  return (
+                    <li key={entity}>
+                      Name: {(getComponent(Symbols.name) as ComponentData).get(entity) as string}
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          : null
         }
-      </ul>
     </aside>
   )
 }
