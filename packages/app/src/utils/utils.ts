@@ -8,9 +8,9 @@
  * @param key - Session storage key
  * @returns Session storage data.
  */
-export function loadFromSessionStorage(key: string): string {
+export function loadFromSessionStorage(key: string): object | string {
   const item = window.sessionStorage.getItem(key);
-  return item != null ? JSON.parse(item) : '';
+  return Boolean(item) && item !== null ? JSON.parse(item) : '';
 }
 
 /**
