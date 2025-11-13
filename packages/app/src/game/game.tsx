@@ -36,7 +36,7 @@ function Game(): ReactElement {
   return (
     <MetadataContext.Provider value={{ metadata, setMetadata }}>
       {metadata
-        ? <ScreenGame />    
+        ? <ScreenGame />
         : <ScreenGameMenu />}
     </MetadataContext.Provider>
   )

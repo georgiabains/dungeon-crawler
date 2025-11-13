@@ -2,14 +2,15 @@
  * Fame: Party
  * - Renders party details.
  */
-import { ReactElement, useRef, useState } from 'react'
+import { ReactElement, useContext, useRef } from 'react'
 import { useGameStore } from './game-store'
 
 // Types
-import { ComponentData, Entity } from '../types'
+import { ComponentData } from '../types'
 
 // Utils
 import Symbols from '../utils/symbols'
+import PartyContext from './context-party'
 
 // NOTE: Extremely IPR. Return after more systems have been created so I know what
 // components every party member needs.
@@ -22,7 +23,7 @@ function FrameParty(): ReactElement {
   const addEntityWithComponents = useGameStore((s) => s.addEntityWithComponents)
   const getComponent = useGameStore((s) => s.getComponent)
   
-  const [party, setParty] = useState([] as Array<Entity>)
+  const {party, setParty} = useContext(PartyContext)
   const counter = useRef(0)
 
   // Temporary until I add name inputs

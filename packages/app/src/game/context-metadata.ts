@@ -1,7 +1,7 @@
 /**
  * Context: Metadata
  * 
- * Create context to track Game metadata (ID, party etc).
+ * Create context to track Game metadata (ID etc).
  */
 import { createContext } from "react"
 import { GameMetadata } from "../types"
