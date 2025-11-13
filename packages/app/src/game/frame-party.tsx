@@ -2,25 +2,22 @@
  * Fame: Party
  * - Renders party details.
  */
-import { ReactElement, useEffect, useRef } from 'react'
+import { ReactElement, useRef } from 'react'
 import { useGameStore } from './game-store'
 import Symbols from '../utils/symbols'
-import { getComponent } from '../engine/components'
 import { ComponentData } from '../types'
 
 // NOTE: Extremely IPR. Return after more systems have been created so I know what
 // components every party member needs.
 
-function FrameParty() {
-  const GameWorld = useGameStore((s) => s.world)
+/**
+ * Render party frame.
+ * @returns {ReactElement}
+ */
+function FrameParty(): ReactElement {
   const addEntityWithComponents = useGameStore((s) => s.addEntityWithComponents)
+  const getComponent = useGameStore((s) => s.getComponent)
   const counter = useRef(0)
-
-  // NOTE: Debugging only
-  // TODO: Remove
-  // useEffect(() => {
-  //   console.log('game world', GameWorld)
-  // }, [GameWorld])
 
   // Temporary until I add name inputs
   const names = ['Morag', 'Boudicca', 'Ares', 'Alyss']
@@ -43,17 +40,23 @@ function FrameParty() {
 
   return (
     <aside>
-      {counter.current < 4 ? <button onClick={handleAddParty}>Add party member</button> : null}
+      {
+        counter.current < 4 
+          ? <button onClick={handleAddParty}>Add party member</button> 
+          : null
+      }
       
       <p>Party details:</p>
       <ul>
         {/* NOTE: I hate this */}
         {
-          getComponent(Symbols.party, GameWorld) 
-            ? [...(getComponent(Symbols.party, GameWorld) as ComponentData).keys()].map((entity): ReactElement => {
+          getComponent(Symbols.party) 
+            ? [...(getComponent(Symbols.party) as ComponentData).keys()]
+              .map((entity): ReactElement => {
                 return (
-                  <li key={entity}>Name: {(getComponent(Symbols.name, GameWorld) as ComponentData).get(entity) as string}
-                </li>
+                  <li key={entity}>
+                    Name: {(getComponent(Symbols.name) as ComponentData).get(entity) as string}
+                  </li>
                 )
               })
             : null
