@@ -3,15 +3,16 @@
  * 
  * Render the game menu.
  */
-import { ReactElement } from 'react'
-import { PropsScreenGameMenu } from '../types'
+import { ReactElement, useContext } from 'react'
+import MetadataContext from './context-metadata'
 
 /**
  * Render game menu.
  * @param {Function} data.setGame - Callback function to set game info. 
  * @returns {ReactElement}
  */
-function ScreenGameMenu({ setGame }: PropsScreenGameMenu): ReactElement {
+function ScreenGameMenu(): ReactElement {
+  const { setMetadata } = useContext(MetadataContext)
   
   /**
    * Handle creating a new game.
@@ -19,7 +20,7 @@ function ScreenGameMenu({ setGame }: PropsScreenGameMenu): ReactElement {
    */
   function handleNewGame(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setGame(crypto.randomUUID())
+    setMetadata({ id: crypto.randomUUID() })
   }
 
   return (

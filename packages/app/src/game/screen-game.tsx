@@ -1,10 +1,14 @@
 import FrameDungeon from "./frame-dungeon"
 import FrameParty from "./frame-party"
+import { useContext } from "react"
+import MetadataContext from "./context-metadata"
 
-function ScreenGame({ game }: { game: string }) {
+function ScreenGame() {
+  const { metadata } = useContext(MetadataContext)
+
   return (
     <>
-      <p>Game ID: {game}</p>
+      <p>Game ID: { metadata.id }</p>
       <FrameParty />
       <FrameDungeon />
     </>

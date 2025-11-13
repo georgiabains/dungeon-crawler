@@ -52,6 +52,13 @@ export type SystemPayload = {
 }
 
 /**
+ * Meta data.
+ */
+export type GameMetadata = {
+  id: string
+}
+
+/**
  * Other.
  */
 export type Encounter = {
