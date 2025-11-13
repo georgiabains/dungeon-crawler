@@ -1,12 +1,30 @@
+/**
+ * Frame: Dungeon
+ * 
+ * Entry frame for all dungeon renders.
+ */
 import { ReactElement, useState } from 'react'
+
+// Components
 import EncounterRender from './encounter'
 
-function FrameDungeon({ showDungeon = false }: { showDungeon: boolean }): ReactElement {
+/**
+ * Render dungeon frame.
+ * @param {boolean} data.showDungeon - Whether the dungeon should render.
+ * @returns {ReactElement|null}
+ */
+function FrameDungeon({ 
+  showDungeon = false 
+}: { showDungeon: boolean }): ReactElement | null {
   const [encounterType, setEncounterType] = useState('' as string)
   const title = <h2>Dungeon</h2>
 
   if (!showDungeon) { return null }
 
+  /**
+   * Handle encounter choice.
+   * @param {React.FormEvent<HTMLFormElement>} event - Form submit event.
+   */
   function handleChooseEncounter(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget)
