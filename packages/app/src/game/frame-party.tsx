@@ -23,7 +23,7 @@ function FrameParty(): ReactElement {
   const addEntityWithComponents = useGameStore((s) => s.addEntityWithComponents)
   const getComponent = useGameStore((s) => s.getComponent)
   
-  const {party, setParty} = useContext(PartyContext)
+  const { party, setParty } = useContext(PartyContext)
   const counter = useRef(0)
 
   // Temporary until I add name inputs

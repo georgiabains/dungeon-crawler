@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import EncounterRender from './encounter'
 
-function FrameDungeon() {
+function FrameDungeon({ showDungeon = false }: { showDungeon: boolean }): ReactElement {
   const [encounterType, setEncounterType] = useState('' as string)
   const title = <h2>Dungeon</h2>
+
+  if (!showDungeon) { return null }
 
   function handleChooseEncounter(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
