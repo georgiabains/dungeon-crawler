@@ -2,10 +2,14 @@
  * Fame: Party
  * - Renders party details.
  */
-import { ReactElement, useRef } from 'react'
+import { ReactElement, useRef, useState } from 'react'
 import { useGameStore } from './game-store'
+
+// Types
+import { ComponentData, Entity } from '../types'
+
+// Utils
 import Symbols from '../utils/symbols'
-import { ComponentData } from '../types'
 
 // NOTE: Extremely IPR. Return after more systems have been created so I know what
 // components every party member needs.
@@ -17,6 +21,8 @@ import { ComponentData } from '../types'
 function FrameParty(): ReactElement {
   const addEntityWithComponents = useGameStore((s) => s.addEntityWithComponents)
   const getComponent = useGameStore((s) => s.getComponent)
+  
+  const [party, setParty] = useState([] as Array<Entity>)
   const counter = useRef(0)
 
   // Temporary until I add name inputs
@@ -36,6 +42,7 @@ function FrameParty(): ReactElement {
     ])
 
     counter.current += 1
+    setParty([...(getComponent(Symbols.party) as ComponentData).keys()])
   }
 
   return (
@@ -48,11 +55,9 @@ function FrameParty(): ReactElement {
       
       <p>Party details:</p>
       <ul>
-        {/* NOTE: I hate this */}
         {
-          getComponent(Symbols.party) 
-            ? [...(getComponent(Symbols.party) as ComponentData).keys()]
-              .map((entity): ReactElement => {
+          party 
+            ? party.map((entity): ReactElement => {
                 return (
                   <li key={entity}>
                     Name: {(getComponent(Symbols.name) as ComponentData).get(entity) as string}
